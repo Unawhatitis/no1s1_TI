@@ -1,0 +1,148 @@
+<div class="wrapper">
+    <div class="page-header page-header-small" filter-color="orange">
+        <div class="page-header-image rellax-header" data-rellax-speed="-8" style="background-image: url('assets/img/no1s1_bg1.jpg') ;">
+        </div>
+        <div class="container">
+            <div class="content-center">
+                <img src="assets/img/logo_inner_white.png" width="70" alt="">
+                <!-- <div class="photo-container">   
+                </div> -->
+                <h3 class="title">no1s1</h3>
+                <p class="category">Decentralized autonomous space</p> 
+                <div class="content">
+                    <div class="social-description">
+                        <h2>11 V</h2>
+                        <p>Solar Panel Input Voltage</p>
+                    </div>
+                    <div class="social-description">
+                        <h2>10 W</h2>
+                        <p>System Output Energy</p>
+                    </div>
+                    <div class="social-description">
+                        <h2>60 %</h2>
+                        <p>Battery State of Charge</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+          <div class="button-container">
+              <a href="#button" [routerLink]="['/examples/login']"  class="btn btn-danger btn-round btn-lg">Enter the Space</a>
+              <!-- <a href="#button" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#button" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on Instagram">
+                <i class="fab fa-instagram"></i>
+              </a> -->
+          </div>
+          <h3 class="title">About me</h3>
+          <h5 class="description">I am a meditation space on blockchain. I am built with A-frame wood modular construction. I am powered by PV-Battery system. Anyone is welcomed to enter as long as I have energy reserve.</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="title text-center">My Portfolio</h4>
+                      <ngb-tabset [justify]="'center'" type="pills" class="nav nav-pills nav-pills-primary  nav-pills-just-icons justify-content-center tab-space">
+                          <ngb-tab>
+                            <ng-template ngbTabTitle>
+                              <i class="now-ui-icons design_image"></i>
+                            </ng-template>
+                              <ng-template ngbTabContent>
+                                <div class="row">
+                                  <div class="col-md-10 ml-auto mr-auto">
+                                      <div class="row collections">
+                                          <div class="col-md-6">
+                                              <img src="assets/img/bg1.jpg" alt="" class="img-raised">
+                                              <img src="assets/img/bg3.jpg" alt="" class="img-raised">
+                                          </div>
+                                          <div class="col-md-6">
+                                              <img src="assets/img/bg8.jpg" alt="" class="img-raised">
+                                              <img src="assets/img/bg7.jpg" alt="" class="img-raised">
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </ng-template>
+                          </ngb-tab>
+                          <ngb-tab>
+                            <ng-template ngbTabTitle>
+                              <i class="now-ui-icons location_world"></i>
+                            </ng-template>
+                              <ng-template ngbTabContent>
+                                <div class="row">
+                                  <div class="col-md-10 ml-auto mr-auto">
+                                      <div class="row collections">
+                                          <div class="col-md-6">
+                                              <img src="assets/img/bg6.jpg" class="img-raised">
+                                              <img src="assets/img/bg11.jpg" alt="" class="img-raised">
+                                          </div>
+                                          <div class="col-md-6">
+                                              <img src="assets/img/bg7.jpg" alt="" class="img-raised">
+                                              <img src="assets/img/bg8.jpg" alt="" class="img-raised">
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </ng-template>
+                          </ngb-tab>
+                          <ngb-tab>
+                            <ng-template ngbTabTitle>
+                              <i class="now-ui-icons sport_user-run"></i>
+                            </ng-template>
+                              <ng-template ngbTabContent>
+                                <div class="row">
+                                  <div class="col-md-10 ml-auto mr-auto">
+                                      <div class="row collections">
+                                          <div class="col-md-6">
+                                              <img src="assets/img/bg3.jpg" alt="" class="img-raised">
+                                              <img src="assets/img/bg8.jpg" alt="" class="img-raised">
+                                          </div>
+                                          <div class="col-md-6">
+                                              <img src="assets/img/bg7.jpg" alt="" class="img-raised">
+                                              <img src="assets/img/bg6.jpg" class="img-raised">
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </ng-template>
+                          </ngb-tab>
+                      </ngb-tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer footer-default">
+        <div class="container">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#">
+                            no1s1
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            About Team
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/examples/profile">
+                            About Me
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ethz.ch/de.html">
+                            ETHZ License
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="copyright">
+                &copy;
+                {{data | date: 'yyyy'}}, Designed by
+                <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
+                <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+            </div>
+        </div>
+    </footer>
+</div>
