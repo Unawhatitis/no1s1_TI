@@ -9843,10 +9843,10 @@ Created using IcoMoon - icomoon.io
 }
 
 .section-images .hero-images-container-1 {
-    max-width: 390px;
+    max-width: 550px;
     position: absolute;
     top: 55%;
-    right: 18%;
+    right: 15%;
 }
 
 .section-images .hero-images-container-2 {
@@ -11335,7 +11335,8 @@ Created using IcoMoon - icomoon.io
     .section-images .hero-images-container-1 {
         right: 10%;
         top: 68%;
-        max-width: 269px;
+        max-width: 450px;
+        /* max-width: 269px; */
     }
     .section-images .hero-images-container-2 {
         right: 5%;
@@ -12076,7 +12077,7 @@ Created using IcoMoon - icomoon.io
 @media screen and (min-width: 991px) and (max-width: 1200px) {
     .section-images .hero-images-container-1 {
         right: 9%;
-        max-width: 370px;
+        max-width: 550px;
     }
     .section-images .hero-images-container-2 {
         right: 2%;

@@ -4,6 +4,11 @@
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
+    "paths":{
+      "crypto":[
+        "./node_modules/eth-lib/lib/bytes.js"
+      ]
+    },
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

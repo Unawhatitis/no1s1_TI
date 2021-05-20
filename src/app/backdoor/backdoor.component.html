@@ -1,0 +1,79 @@
+<div class="wrapper">
+    <div class="page-header page-header-small" filter-color="orange">
+        <div class="page-header-image rellax-header" data-rellax-speed="-8" style="background-image: url('assets/img/no1s1_bg1.jpg') ;">
+        </div>
+        <div class="container">
+            <div class="content-center">
+                <img src="assets/img/logo_inner_white.png" width="70" alt="">
+                <h3 class="title">no1s1</h3>
+                <p class="category">Decentralized autonomous space</p> 
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+
+          <h3 class="title">Backdoor</h3>
+          <br>
+          <h3 class="title">Log Energy System Data</h3>
+          <h5 class="description">batteryoperatingtemp</h5>
+          <input class="form-control" [(ngModel)]="logs.bot" />
+          <h5 class="description">batterycurrent</h5>
+          <input class="form-control" [(ngModel)]="logs.bcu" />
+          <h5 class="description">batteryvoltage</h5>
+          <input class="form-control" [(ngModel)]="logs.bv" />
+          <h5 class="description">batterystateofcharge</h5>
+          <input class="form-control" [(ngModel)]="logs.bsoc" />
+          <h5 class="description">batterychargecycle</h5>
+          <input class="form-control" [(ngModel)]="logs.bcc" />
+          <h5 class="description">batterycapacity</h5>
+          <input class="form-control" [(ngModel)]="logs.bca" />
+          <h5 class="description">pvvoltage</h5>
+          <input class="form-control" [(ngModel)]="logs.pvv" />
+          <h5 class="description">pvcurrent</h5>
+          <input class="form-control" [(ngModel)]="logs.pvc" />
+          <h5 class="description">systempower</h5>
+          <input class="form-control" [(ngModel)]="logs.sp" />
+          <h5 class="description">time</h5>
+          <input class="form-control" [(ngModel)]="logs.time" />
+          <button class="btn" (click)="onLog()">Log Data</button>
+        </div>
+    </div>
+
+
+
+    <footer class="footer footer-default">
+        <div class="container">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#">
+                            no1s1
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            About Team
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/examples/profile">
+                            About Me
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ethz.ch/de.html">
+                            ETHZ License
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="copyright">
+                &copy;
+                {{data | date: 'yyyy'}}, Designed by
+                <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
+                <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+            </div>
+        </div>
+    </footer>
+</div>

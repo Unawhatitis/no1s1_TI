@@ -5,7 +5,7 @@ contract no1s1data{
     using SafeMath for uint256;
 
     address payable no1s1;
-    address payable adminacc;
+    address adminacc;
     address payable fundingacc;
     address payable defaultuseracc;
     uint256 no1s1balance;
@@ -50,7 +50,7 @@ contract no1s1data{
       uint256 batterycapacity;
       uint256 pvvoltage;
       uint256 pvcurrent;
-      uint256 pvchargestate;
+      uint256 systempower;
       uint256 time;
     }
 
@@ -98,7 +98,7 @@ contract no1s1data{
     mapping (string => UserUSAGE) public usersusage;
     mapping (string => partner) public partners;
 
-    constructor()public{
+    constructor(){
       adminacc=msg.sender;
     }
 
@@ -124,7 +124,7 @@ contract no1s1data{
 
 
     event no1s1update(uint batterystateofcharge);
-    function broadcastData(uint256 _Btemp,uint256 _Bcurrent,uint256 _Bvoltage,uint256 _BSOC,uint256 _BCS,uint256 _Bcapacity,uint256 _Pvoltage,uint256 _Pcurrent,uint256 _Pchargestate, uint256 _time)public onlyAdmin{
+    function broadcastData(uint256 _Btemp,uint256 _Bcurrent,uint256 _Bvoltage,uint256 _BSOC,uint256 _BCS,uint256 _Bcapacity,uint256 _Pvoltage,uint256 _Pcurrent,uint256 _Senergy, uint256 _time)public onlyAdmin{
         logs.push(Log(
           {batteryoperatingtemp: _Btemp,
           batterycurrent: _Bcurrent, 
@@ -134,7 +134,7 @@ contract no1s1data{
           batterycapacity: _Bcapacity,
           pvvoltage: _Pvoltage,
           pvcurrent: _Pcurrent,
-          pvchargestate: _Pchargestate,
+          systempower: _Senergy,
           time:_time}
           ));
         
@@ -213,6 +213,23 @@ contract no1s1data{
       uint256 lastuuid=users[users.length-1].uuid;
       return (lastuuid);
     }
+    
+    event LastLog(uint pviv, uint soe, uint bsoc);
+    function mylastlogs() public returns(uint256,uint256,uint256){
+      uint256 lastPVIV=logs[logs.length-1].pvvoltage;
+      uint256 lastSOE=logs[logs.length-1].systempower;
+      uint256 lastBSoC=logs[logs.length-1].batterystateofcharge;
+      emit LastLog(lastPVIV,lastSOE,lastBSoC);
+      return (lastPVIV,lastSOE,lastBSoC);
+    }
+    
+    function mylastlogsV() public view returns(uint256,uint256,uint256){
+      uint256 lastPVIV=logs[logs.length-1].pvvoltage;
+      uint256 lastSOE=logs[logs.length-1].systempower;
+      uint256 lastBSoC=logs[logs.length-1].batterystateofcharge;
+      return (lastPVIV,lastSOE,lastBSoC);
+    }
+
 
     /*exucable once every season*/
     // function fundDefault()external onlyFundacc payable{

@@ -399,7 +399,8 @@
 }
 
 .section-tabs {
-    background: #EEEEEE;
+    padding-bottom: 0;
+    background: #ffffff;
 }
 
 .section-pagination {

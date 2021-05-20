@@ -7,7 +7,9 @@ import { ComponentsComponent } from './components/components.component';
 import { LandingComponent } from './examples/landing/landing.component';
 import { LoginComponent } from './examples/login/login.component';
 import { ProfileComponent } from './examples/profile/profile.component';
+import { ProfileRMComponent } from './examples/profile_RM/profile_RM.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
+import { BackdoorComponent} from './backdoor/backdoor.component';
 
 const routes: Routes =[
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -15,7 +17,9 @@ const routes: Routes =[
     { path: 'nucleoicons',          component: NucleoiconsComponent },
     { path: 'examples/landing',     component: LandingComponent },
     { path: 'examples/login',       component: LoginComponent },
-    { path: 'examples/profile',     component: ProfileComponent }
+    { path: 'examples/profile',     component: ProfileComponent },
+    { path: 'examples/profile_RM',     component: ProfileRMComponent },
+    { path: 'backdoor',     component: BackdoorComponent }
 ];
 
 @NgModule({
