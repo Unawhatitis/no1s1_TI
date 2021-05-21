@@ -6,10 +6,11 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { ExamplesModule } from './examples/examples.module';
-
+import { BrowserModule} from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { BackdoorComponent } from './backdoor/backdoor.component';
+
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { BackdoorComponent } from './backdoor/backdoor.component';
         RouterModule,
         AppRoutingModule,
         ComponentsModule,
-        ExamplesModule
+        ExamplesModule,
+        BrowserModule
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -20,9 +20,9 @@ export class SMCService {
   constructor() {
     this.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
     this.accounts=this.web3.eth.accounts;
-    // this.web3.eth.accounts.privateKeyToAccount("0x396b15ea86a518d9e4b882172d004404932e3c507ac0564143cb0e5153e51f41");
-    this.no1s1 = new this.web3.eth.Contract(tokenAbi.abi, "0x4BA951cc71725F87dd551BA2E1dB10693219f7B3");
-    this.defaultAcc=" 0x0bE66B5Db0B895b488027456c95Ac7C1ee11124c";
+    this.web3.eth.accounts.privateKeyToAccount("0x8103f9315286d6da2a50b46ffa1652202e37284f9f0da380a5c715a954763bf4");
+    this.no1s1 = new this.web3.eth.Contract(tokenAbi.abi, "0xd195972E4f6356675E06165d5e3931519E508a0D");
+    this.defaultAcc="0x889411B66fe42A212656DFb69AB313478e9E0875";
   }
   
   public registerNewUser(qusername,qcCode,qtime,quuid): Promise<any> {
@@ -61,7 +61,7 @@ export class SMCService {
 
   public returnLastLog(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.no1s1.methods.mylastlogsV().call(function(err, data) {
+      this.no1s1.methods.mylastlogs().call(function(err, data) {
           if (err) {
             console.error(err);
             reject(err);

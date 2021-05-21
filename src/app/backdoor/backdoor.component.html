@@ -16,29 +16,42 @@
           <h3 class="title">Backdoor</h3>
           <br>
           <h3 class="title">Log Energy System Data</h3>
-          <h5 class="description">batteryoperatingtemp</h5>
-          <input class="form-control" [(ngModel)]="logs.bot" />
-          <h5 class="description">batterycurrent</h5>
-          <input class="form-control" [(ngModel)]="logs.bcu" />
-          <h5 class="description">batteryvoltage</h5>
-          <input class="form-control" [(ngModel)]="logs.bv" />
-          <h5 class="description">batterystateofcharge</h5>
-          <input class="form-control" [(ngModel)]="logs.bsoc" />
-          <h5 class="description">batterychargecycle</h5>
-          <input class="form-control" [(ngModel)]="logs.bcc" />
-          <h5 class="description">batterycapacity</h5>
-          <input class="form-control" [(ngModel)]="logs.bca" />
-          <h5 class="description">pvvoltage</h5>
-          <input class="form-control" [(ngModel)]="logs.pvv" />
-          <h5 class="description">pvcurrent</h5>
-          <input class="form-control" [(ngModel)]="logs.pvc" />
-          <h5 class="description">systempower</h5>
-          <input class="form-control" [(ngModel)]="logs.sp" />
-          <h5 class="description">time</h5>
-          <input class="form-control" [(ngModel)]="logs.time" />
-          <button class="btn" (click)="onLog()">Log Data</button>
+          <div class="form-group">
+            <!-- <div class="group">
+                <input [value]="value.val" (input)="value.val=renew($event)">
+                value entered is {{value.val}}
+              </div> -->
+
+            <h5 class="description">batteryoperatingtemp</h5>
+            <input [value]='logs.bot' (input)="logs.bot=logdata($event)">
+            <h5 class="description">batterycurrent</h5>
+            <input [value]="logs.bcu" (input)="logs.bcu=logdata($event)">
+            <h5 class="description">batteryvoltage</h5>
+            <input [value]="logs.bv" (input)="logs.bv=logdata($event)">
+            <h5 class="description">batterystateofcharge</h5>
+            <input [value]="logs.bsoc" (input)="logs.bsoc=logdata($event)">
+            <h5 class="description">batterychargecycle</h5>
+            <input [value]="logs.bcc" (input)="logs.bcc=logdata($event)">
+            <h5 class="description">batterycapacity</h5>
+            <input [value]="logs.bca" (input)="logs.bca=logdata($event)">
+            <h5 class="description">pvvoltage</h5>
+            <input [value]="logs.pvv" (input)="logs.pvv=logdata($event)">
+            <h5 class="description">pvcurrent</h5>
+            <input [value]="logs.pvc" (input)="logs.pvc=logdata($event)">
+            <h5 class="description">systempower</h5>
+            <input [value]="logs.sp" (input)="logs.sp=logdata($event)">
+            <h5 class="description">time</h5>
+            <input [value]="logs.time" (input)="logs.time=logdata($event)">
+            <button class="btn btn-info btn-block" (click)="onLog()">Log Data</button>
+            <button class="btn" (click)="lastLog()">Last Data</button>
+          </div>
+          <h5 class="description">panel voltage = {{PVvoltage}}</h5>  
+          <h5 class="description">panel system power consumption = {{systemenergy}}</h5>  
+          <h5 class="description">battery state of charge = {{Bstateofcharge}}</h5>  
         </div>
     </div>
+
+    
 
 
 
@@ -68,12 +81,12 @@
                     </li>
                 </ul>
             </nav>
-            <div class="copyright">
+            <!-- <div class="copyright">
                 &copy;
                 {{data | date: 'yyyy'}}, Designed by
                 <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
                 <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
-            </div>
+            </div> -->
         </div>
     </footer>
 </div>
