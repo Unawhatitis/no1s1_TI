@@ -42,16 +42,15 @@ contract no1s1data{
     
 
     struct Log{
-      uint256 batteryoperatingtemp;
       uint256 batterycurrent;
       uint256 batteryvoltage;
       uint256 batterystateofcharge;
-      uint256 batterychargecycle;
-      uint256 batterycapacity;
       uint256 pvvoltage;
       uint256 pvcurrent;
       uint256 systempower;
       uint256 time;
+      int256 allowedduration;
+      uint256 cost;
     }
 
     struct UserID{
@@ -124,18 +123,33 @@ contract no1s1data{
 
 
     event no1s1update(uint batterystateofcharge);
-    function broadcastData(uint256 _Btemp,uint256 _Bcurrent,uint256 _Bvoltage,uint256 _BSOC,uint256 _BCS,uint256 _Bcapacity,uint256 _Pvoltage,uint256 _Pcurrent,uint256 _Senergy, uint256 _time)public onlyAdmin{
+    function broadcastData(uint256 _Bcurrent,uint256 _Bvoltage,uint256 _BSOC,uint256 _Pvoltage,uint256 _Pcurrent,uint256 _Senergy, uint256 _time)public onlyAdmin{
+
+        int weiperchf = 18e14;
+        //uint256 costpm = weiperchf; 
+        uint256 current_energy=_BSOC;
+        int256 _duration;
+        if(current_energy >= 75 ){
+              _duration = 45;}
+        if(current_energy >= 45 ){
+            _duration = 25;}
+        if(current_energy >= 25 ){
+            _duration = 15;}
+        if(current_energy <25 ){
+            _duration = 5;}
+        uint256 _servicecost = uint256(_duration * weiperchf);
+
         logs.push(Log(
-          {batteryoperatingtemp: _Btemp,
-          batterycurrent: _Bcurrent, 
+          {batterycurrent: _Bcurrent, 
           batteryvoltage: _Bvoltage,
           batterystateofcharge: _BSOC, 
-          batterychargecycle: _BCS, 
-          batterycapacity: _Bcapacity,
           pvvoltage: _Pvoltage,
           pvcurrent: _Pcurrent,
           systempower: _Senergy,
-          time:_time}
+          time:_time,
+          allowedduration:_duration,
+          cost:_servicecost
+          }
           ));
         
         emit no1s1update(_BSOC);
@@ -163,13 +177,13 @@ contract no1s1data{
       /*require (logs.length == 0, "no registered data yet");*/
       int weiperchf = 18e14;
       //uint256 costpm = weiperchf; 
-      uint256 current_energy=logs[logs.length-1].batterycapacity;
+      uint256 current_energy=logs[logs.length-1].batterystateofcharge;
       uint256 last_time=logs[logs.length-1].time;
       int256 _duration;
       if(current_energy >= 75 ){
             _duration = 40;}
         if(current_energy >= 45 ){
-            _duration = 20;}
+            _duration = 20;()}
         if(current_energy >= 25 ){
             _duration = 10;}
         if(current_energy <25 ){
@@ -207,28 +221,36 @@ contract no1s1data{
       emit whatuuid(lastuuid);
       return (lastuuid);
     }
+    event mybalance(uint balance);
+    function balanceOf() public returns(){
+      return (this.balance);
+      emit mybalance(this.balance);
+    }
 
     
-    function whatisuseruuid2() public view returns(uint256){
-      uint256 lastuuid=users[users.length-1].uuid;
-      return (lastuuid);
-    }
-    
-    event LastLog(uint pviv, uint soe, uint bsoc);
-    function mylastlogs() public returns(uint256,uint256,uint256){
+    // function whatisuseruuid2() public view returns(uint256){
+    //   uint256 lastuuid=users[users.length-1].uuid;
+    //   return (lastuuid);
+    // }
+
+
+    event LastLog(uint pviv, uint soe, uint bsoc, int adur, uint cost);
+    function mylastlogs() public returns(uint256,uint256,uint256,int256,uint256){
       uint256 lastPVIV=logs[logs.length-1].pvvoltage;
       uint256 lastSOE=logs[logs.length-1].systempower;
       uint256 lastBSoC=logs[logs.length-1].batterystateofcharge;
-      emit LastLog(lastPVIV,lastSOE,lastBSoC);
-      return (lastPVIV,lastSOE,lastBSoC);
+      int256 lastAD=logs[logs.length-1].allowedduration;
+      uint256 lastC=logs[logs.length-1].cost;
+      emit LastLog(lastPVIV,lastSOE,lastBSoC,lastAD,lastC);
+      return (lastPVIV,lastSOE,lastBSoC,lastAD,lastC);
     }
     
-    function mylastlogsV() public view returns(uint256,uint256,uint256){
-      uint256 lastPVIV=logs[logs.length-1].pvvoltage;
-      uint256 lastSOE=logs[logs.length-1].systempower;
-      uint256 lastBSoC=logs[logs.length-1].batterystateofcharge;
-      return (lastPVIV,lastSOE,lastBSoC);
-    }
+    // function mylastlogsV() public view returns(uint256,uint256,uint256){
+    //   uint256 lastPVIV=logs[logs.length-1].pvvoltage;
+    //   uint256 lastSOE=logs[logs.length-1].systempower;
+    //   uint256 lastBSoC=logs[logs.length-1].batterystateofcharge;
+    //   return (lastPVIV,lastSOE,lastBSoC);
+    // }
 
 
     /*exucable once every season*/
@@ -254,7 +276,8 @@ contract no1s1data{
     /*ToContract(servicecost);*/
     /*require (sent, "payment failed!");*/
     }
-    
+
+
     function toContract() public payable {
         
     }
@@ -298,4 +321,3 @@ contract no1s1data{
 
 
 }
-
