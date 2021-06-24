@@ -183,18 +183,18 @@ export class ProfileComponent implements OnInit {
         //   }
         // }
 
-        for ( let i = 0; i < intersects.length; i ++ ) {
+        // for ( let i = 0; i < intersects.length; i ++ ) {
 
-          //const oriMaterial = intersects[ i ].object.material
+        //   //const oriMaterial = intersects[ i ].object.material
 
-          const selMaterial =  new THREE.MeshBasicMaterial( { color: 'black' } );
+        //   const selMaterial =  new THREE.MeshBasicMaterial( { color: 'black' } );
 
-          intersects[ i ].object.material = selMaterial;
-          //try setvalues methods, https://threejs.org/docs/#api/en/materials/Material
+        //   intersects[ i ].object.material = selMaterial;
+        //   //try setvalues methods, https://threejs.org/docs/#api/en/materials/Material
 
-          //intersects[ i ].object.material = oriMaterial;
+        //   //intersects[ i ].object.material = oriMaterial;
 
-        }
+        // }
 
         if (resizeRendererToDisplaySize(renderer)) {
           const canvas = renderer.domElement;
