@@ -3,6 +3,15 @@ import * as Rellax from 'rellax';
 import {default as Web3} from 'web3';
 import {SMCService} from '../../service/smc.service';
 
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader.js';
+import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+import {MTLLoader} from 'three/examples/jsm/loaders/MTLLoader.js';
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader.js';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -42,10 +51,196 @@ export class ProfileComponent implements OnInit {
         that.Bstateofcharge=data[2];
       })
       this._smcService.returnBalance().then(function(data){
-        console.log(data);
+        //console.log(data);
         that.no1s1balance=data[0];
         that.balance=data[1]*0.000000000000000001;
       })
+
+///////////////////////////3d tryout//////////////////////////
+
+      const mouse = new THREE.Vector2(1,1);
+      const canvas = document.querySelector('#c');
+      
+
+      let mesh; 
+      let camera, scene, renderer,stats,raycaster; 
+      let INTERSECTED;
+
+      prepareAnimate();
+      
+
+      animate();
+
+      function prepareAnimate() {
+
+        const fov = 45;
+        const aspect = 2;  // the canvas default
+        const near = 0.1;
+        const far =100;  
+
+        camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        camera.position.set(10, 10, 10);
+
+        const controls = new OrbitControls(camera, canvas);
+        controls.target.set(2, 0, 2);
+        controls.update();
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color('white');
+
+        const mtlLoader = new MTLLoader();
+        mtlLoader.load('../../assets/3dmodel/singleexport_test10.mtl', (mtl) => {
+          mtl.preload();
+          const objLoader = new OBJLoader();
+          objLoader.setMaterials(mtl);
+          objLoader.load('../../assets/3dmodel/singleexport_test10.obj', (root) => {
+            root.scale.set(2.5,2.5,2.5);
+            mesh=root;
+            scene.add(mesh);
+            //console.log(mesh.userData);
+            //console.log(mesh.children);
+            initGUI(mesh.children);
+          });
+        });
+
+        const skyColor = 0xB1E1FF;  // light blue
+        const groundColor = 0xB97A20;  // brownish orange
+        const intensity = 0.75;
+        const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+        scene.add(light);
+
+        const color = 0xFFFFFF;
+        const intensity2 = 0.5;
+        const light2 = new THREE.DirectionalLight(color, intensity);
+        light.position.set(5, 10, 2);
+        scene.add(light2);
+        scene.add(light2.target);
+
+        renderer = new THREE.WebGLRenderer({canvas});
+        raycaster = new THREE.Raycaster();
+
+        stats = new Stats();
+				document.body.appendChild( stats.dom );
+
+        //document.addEventListener( 'mousemove', onDocumentMouseMove );
+
+        window.addEventListener( 'mousemove', onMouseMove );
+
+        
+
+
+      }
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+
+      }
+
+      
+
+      function onMouseMove( event ) {
+
+        event.preventDefault();
+
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+      }
+      //////////////////////////////
+
+
+      function resizeRendererToDisplaySize(renderer) {
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+          renderer.setSize(width, height, false);
+        }
+        return needResize;
+      }
+
+
+      function render() {
+
+        raycaster.setFromCamera( mouse, camera );
+
+        //console.log(scene.children);
+        //console.log(mesh.children); mesh children are mesh 
+
+        const intersects = raycaster.intersectObjects(mesh.children);
+
+        // if(intersects.length > 0){
+        //   if (INTERSECTED != intersects[0].object){
+        //     if(INTERSECTED) INTERSECTED.material(INTERSECTED.currentMaterial);
+
+        //     INTERSECTED = intersects[0].object;
+        //     INTERSECTED.currentMaterial=INTERSECTED.material;
+        //     const selMaterial =  new THREE.MeshBasicMaterial( { color: 'black' } );
+        //     INTERSECTED.material = selMaterial;
+        //   }
+        // }
+
+        for ( let i = 0; i < intersects.length; i ++ ) {
+
+          //const oriMaterial = intersects[ i ].object.material
+
+          const selMaterial =  new THREE.MeshBasicMaterial( { color: 'black' } );
+
+          intersects[ i ].object.material = selMaterial;
+          //try setvalues methods, https://threejs.org/docs/#api/en/materials/Material
+
+          //intersects[ i ].object.material = oriMaterial;
+
+        }
+
+        if (resizeRendererToDisplaySize(renderer)) {
+          const canvas = renderer.domElement;
+          camera.aspect = canvas.clientWidth / canvas.clientHeight;
+          camera.updateProjectionMatrix();
+        }
+
+        
+        renderer.render(scene, camera);
+
+        //requestAnimationFrame(render);
+      }
+
+      function initGUI( layers ) {
+        const gui = new GUI( { width: 300 } );
+        //gui.domElement.id='gui';
+        const layersControl = gui.addFolder( 'layers' );
+        layersControl.open();
+        for ( let i = 0; i < layers.length; i ++ ) {
+          const layer = layers[ i ];
+          layersControl.add( layer, 'visible' ).name( layer.name ).onChange( function ( val ) {
+            const name = this.object.name;
+            scene.traverse( function ( child ) {
+              if ( child.userData.hasOwnProperty( 'attributes' ) ) {
+                if ( 'layerIndex' in child.userData.attributes ) {
+                  const layerName = layers[ child.userData.attributes.layerIndex ].name;
+                  if ( layerName === name ) {
+  
+                    child.visible = val;
+                    layer.visible = val;
+                  }
+                }
+              }
+            } );
+          } );
+        }
+        const no1s1Data = gui.addFolder('informations');
+        no1s1Data.add();
+
+      }
+
+      //requestAnimationFrame(render);
+
+
+      //window.requestAnimationFrame(render);
+      
 
     }
     ngOnDestroy(){

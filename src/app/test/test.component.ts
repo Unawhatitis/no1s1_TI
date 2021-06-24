@@ -173,6 +173,7 @@ export class TestComponent implements OnInit {
     const color = new THREE.Color();
 
     init();
+    console.log(camera);
     animate();
 
     function init() {
@@ -288,6 +289,8 @@ export class TestComponent implements OnInit {
       stats.update();
 
     }
+    /////////////////////////////////////////////////////////example//////////////////////////////////////////////////////////
+
     // const raycaster = new THREE.Raycaster();
     // const mouse = new THREE.Vector2(1,1);
     // const canvas = document.querySelector('#c');
