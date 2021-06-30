@@ -1,6 +1,10 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy} from '@angular/core';
 import {default as Web3} from 'web3';
 import {SMCService} from '../service/smc.service';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import * as Rellax from 'rellax';
+
 // import { NgModule } from '@angular/core';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { FormsModule,ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +27,26 @@ import {SMCService} from '../service/smc.service';
   styleUrls: ['./backdoor.component.css']
 })
 export class BackdoorComponent implements OnInit {
+  data : Date = new Date();
+
+  page = 4;
+  page1 = 5;
+  page2 = 3;
+  focus;
+  focus1;
+  focus2;
+
+  date: {year: number, month: number};
+  model: NgbDateStruct;
+
+  public isCollapsed = true;
+  public isCollapsed1 = true;
+  public isCollapsed2 = true;
+
+  state_icon_primary = true;
+
+  //////////////////////////////////////
+
   private web3:Web3;
   logs = {bcu:"",bv:"", bsoc:"",pvv:"",pvc:"",sp:"",time:""}
   val:number;
@@ -31,9 +55,25 @@ export class BackdoorComponent implements OnInit {
   systemenergy:any;
   Bstateofcharge:any;
 
-  constructor(private _smcService:SMCService) { }
+  constructor(private _smcService:SMCService, private renderer : Renderer2, config: NgbAccordionConfig) {config.closeOthers = true;
+    config.type = 'info'; }
+
+  isWeekend(date: NgbDateStruct) {
+    const d = new Date(date.year, date.month - 1, date.day);
+    return d.getDay() === 0 || d.getDay() === 6;
+  }
+
+  isDisabled(date: NgbDateStruct, current: {month: number}) {
+      return date.month !== current.month;
+  }
 
   ngOnInit(): void {
+    var rellaxHeader = new Rellax('.rellax-header');
+
+    var navbar = document.getElementsByTagName('nav')[0];
+    navbar.classList.add('navbar-transparent');
+    var body = document.getElementsByTagName('body')[0];
+    body.classList.add('index-page');
   }
   
   logdata(event:Event):string{
@@ -58,6 +98,13 @@ export class BackdoorComponent implements OnInit {
       that.systemenergy=data[1];
       that.Bstateofcharge=data[2];
     })
+  }
+
+  ngOnDestroy(){
+    var navbar = document.getElementsByTagName('nav')[0];
+    navbar.classList.remove('navbar-transparent');
+    var body = document.getElementsByTagName('body')[0];
+    body.classList.remove('index-page');
   }
 
   
