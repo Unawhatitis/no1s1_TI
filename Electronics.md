@@ -21,7 +21,7 @@
 - LED
   - Green, Pin(22)
   - Red, Pin(17)
-  - Blue, Pin(6)
+  - Blue, Pin(6)        
 - Motion sensor, Pin(4)
 - Pressure sensor, Pin(12)
 - Viberator, Pin(25)

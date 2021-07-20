@@ -11,6 +11,8 @@ import { ProfileRMComponent } from './examples/profile_RM/profile_RM.component';
 import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
 import { BackdoorComponent} from './backdoor/backdoor.component';
 import { TestComponent } from './test/test.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+
 
 const routes: Routes =[
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -21,7 +23,13 @@ const routes: Routes =[
     { path: 'examples/profile',     component: ProfileComponent },
     { path: 'examples/profile_RM',     component: ProfileRMComponent },
     { path: 'backdoor',     component: BackdoorComponent },
-    { path: 'test', component:TestComponent}
+    { path: 'test',     component:TestComponent},
+    { path: 'dashboard' ,   component:AdminLayoutComponent, 
+    children: [
+        {
+      path: 'dashboard',
+      loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
+  }]},
 
 ];
 

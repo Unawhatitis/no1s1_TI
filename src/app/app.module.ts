@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
+import { ToastrModule } from "ngx-toastr";
+
+
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { ExamplesModule } from './examples/examples.module';
@@ -10,6 +13,12 @@ import { BrowserModule} from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { BackdoorComponent } from './backdoor/backdoor.component';
+import { SidebarModule } from './sidebar/sidebar.module';
+import { FooterModule } from './shared/footer/footer.module';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { NavbarModule} from './shared/navbar2/navbar.module';
+import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
+
 //import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import { NouisliderModule } from 'ng2-nouislider';
@@ -38,6 +47,7 @@ import { TestComponent } from './test/test.component';
         NotificationComponent,
         NgbdModalBasic,
         TestComponent,
+        AdminLayoutComponent
         //ComponentsComponent,
     ],
     imports: [
@@ -54,6 +64,11 @@ import { TestComponent } from './test/test.component';
         FormsModule,
         NgbModule,
         NouisliderModule,
+        SidebarModule,
+        FooterModule,
+        NavbarModule,
+        FixedPluginModule,
+        ToastrModule.forRoot(),
         //FormBuilder,FormControl,FormGroup,Validators
     ],
     providers: [],
