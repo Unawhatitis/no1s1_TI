@@ -12,13 +12,14 @@ import { ExamplesModule } from './examples/examples.module';
 import { BrowserModule} from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+//import { NavbarComponent2 } from './shared/navbar2/navbar.component';
 import { BackdoorComponent } from './backdoor/backdoor.component';
 import { SidebarModule } from './sidebar/sidebar.module';
 import { FooterModule } from './shared/footer/footer.module';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { NavbarModule} from './shared/navbar2/navbar.module';
 import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
-
+//import {ComponentsRoutingModule} from'./components/components.rounting';
 //import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import { NouisliderModule } from 'ng2-nouislider';
@@ -47,7 +48,9 @@ import { TestComponent } from './test/test.component';
         NotificationComponent,
         NgbdModalBasic,
         TestComponent,
-        AdminLayoutComponent
+        AdminLayoutComponent,
+        //ComponentsRoutingModule
+        //NavbarComponent2,
         //ComponentsComponent,
     ],
     imports: [

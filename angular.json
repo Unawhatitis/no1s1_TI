@@ -23,7 +23,8 @@
             "styles": [
               "src/styles.scss",
               "src/assets/sass/now-ui-kit.scss",
-              "src/assets/css/demo.css"
+              "src/assets/css/demo.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/rellax/rellax.min.js"

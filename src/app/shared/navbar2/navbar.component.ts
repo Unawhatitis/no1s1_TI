@@ -9,7 +9,7 @@ import { Location} from '@angular/common';
     templateUrl: 'navbar.component.html'
 })
 
-export class NavbarComponent implements OnInit{
+export class NavbarComponent2 implements OnInit{
     private listTitles: any[];
     location: Location;
     private nativeElement: Node;

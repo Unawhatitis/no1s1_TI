@@ -5,6 +5,7 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { NouisliderModule } from 'ng2-nouislider';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { RouterModule } from '@angular/router';
+//import { NavbarComponent } from '../shared/navbar/navbar.component';
 
 //import { BasicelementsComponent } from './basicelements/basicelements.component';
 // import { NavigationComponent } from './navigation/navigation.component';
@@ -26,6 +27,7 @@ import { ComponentsComponent } from './components.component';
       ],
     declarations: [
         ComponentsComponent,
+        //NavbarComponent,
         // BasicelementsComponent,
         // NavigationComponent,
         // TypographyComponent,
