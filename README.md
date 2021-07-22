@@ -25,3 +25,5 @@
 - mapping material successful
 - [save obj tutorial](https://www.google.com/search?q=rhino+to+blender&rlz=1C1GCEU_en&oq=rhino+to+blender&aqs=chrome.0.35i39l2j0l5j0i22i30l3.8064j0j4&sourceid=chrome&ie=UTF-8#kpvalbx=_FFHLYJ6rDY2E9u8PtuOE6Ac40)
 - [OBJ tutorial](https://threejsfundamentals.org/threejs/lessons/threejs-load-obj.html)
+
+## Push gh-pages
