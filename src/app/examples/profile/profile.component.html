@@ -1,14 +1,14 @@
 <div class="wrapper">
     <div class="page-header page-header-small" filter-color="orange">
-        <div class="page-header-image rellax-header" data-rellax-speed="-8" style="background-image: url('assets/img/no1s1_bg1.jpg') ;">
+        <div class="page-header-image rellax-header" data-rellax-speed="-8" style="background-image: url('assets/img/no1s1_bg10.jpg') ;">
         </div>
         <div class="container">
             <div class="content-center">
                 <img src="assets/img/logo_inner_white.png" width="70" alt="">
                 <!-- <div class="photo-container">   
                 </div> -->
-                <h3 class="title">no1s1</h3>
-                <p class="category">Decentralized autonomous space</p> 
+                <!--<h3 class="title">no1s1</h3>
+                <p class="category">Decentralized autonomous space</p> -->
                 <div class="content">
                     <div class="social-description">
                         <h2>{{PVvoltage}} V</h2>
@@ -27,13 +27,14 @@
                         <p>Financial Balance</p>
                     </div>
                 </div>
-                <p>*these data are updated every 15 minutes</p>
+                <p>*the data is updated every 15 minutes.</p>
             </div>
         </div>
     </div>
+
     <div class="section">
         <div class="container">
-          <div class="button-container">
+            <div class="button-container">
               <a href="#button" href='/examples/login'  class="btn btn-danger btn-round btn-lg">Enter the Space</a>
               <!-- <a href="#button" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on Twitter">
                 <i class="fab fa-twitter"></i>
@@ -41,14 +42,14 @@
               <a href="#button" class="btn btn-default btn-round btn-lg btn-icon" rel="tooltip" title="Follow me on Instagram">
                 <i class="fab fa-instagram"></i>
               </a> -->
-          </div>
+            </div>
         <h3 class="title">The Vision</h3>
-          <h5 class="description">The idea of no1s1 is inspired from a concept called Natural 2.0, a futuristic concept enabled by blockchain, where things can own themselves on blockchain. no1s1 is the first prototype that combined this idea with the built enviroment. It is a space that owns itself.</h5>
+          <h5 class="description">The idea of no1s1 is inspired by a futuristic concept called <a target="_blank" href="https://blog.oceanprotocol.com/nature-2-0-27bdf8238071?gi=5c736df2ad47">Nature2.0</a>, where things leverage the possibility to own themselves on the blockchain. no1s1 is the first prototype that applies this idea to the built enviroment. It is a space that owns itself. You can read more details in our recently published <a target="_blank" href="https://ec-3.org/publications/conferences/2021/paper/?id=185">Conference Paper</a>.</h5>
         <h3 class="title">The Build</h3>
-          <h5 class="description">I am currently defined as a meditation space on blockchain. I am built with A-frame wood modular construction. I am powered by PV-Battery system. Anyone is welcomed to enter as long as I have energy reserve.</h5>
-          <div class="separator separator-primary"></div>
-          <canvas id="c"></canvas>
-          <div class="row">
+            <h5 class="description">I am currently defined as a meditation space. I am built with A-frame wood modular construction and powered by a PV-Battery system. Anyone is welcome to enter - as long as I have sufficient energy reserve.</h5>
+            <!--<div class="separator separator-primary"></div>
+            <canvas id="c"></canvas>-->
+            <div class="row">
                 <div class="col-md-12">
                     <!-- <h4 class="title text-center">My system</h4> -->
                     <img src="assets/img/exploded_axon_0518.png" >
@@ -122,9 +123,11 @@
             </div>
         </div>
     </div>
-    <footer class="footer footer-default">
+
+    
+    <footer class="footer" data-background-color="black">
         <div class="container">
-            <nav>
+            <!--<nav>
                 <ul>
                     <li>
                         <a href="#">
@@ -147,7 +150,7 @@
                         </a>
                     </li>
                 </ul>
-            </nav>
+            </nav>-->
             <div class="copyright">
                 &copy;
                 {{data | date: 'yyyy'}}, Designed by
@@ -156,4 +159,5 @@
             </div>
         </div>
     </footer>
+    
 </div>

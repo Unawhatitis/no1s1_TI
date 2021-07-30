@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {
@@ -27,11 +28,11 @@
     "@angular/router": "9.0.6",
     "@ng-bootstrap/ng-bootstrap": "6.0.0",
     "@openzeppelin/contracts": "^4.1.0",
-    "@truffle/contract": "^4.3.18",
+    "@truffle/contract": "^4.3.26",
     "ajv": "6.10.0",
     "ajv-keywords": "3.4.0",
     "bootstrap": "4.0.0",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "copy-webpack-plugin": "5.0.1",
     "core-js": "3.6.4",
     "font-awesome": "4.7.0",
