@@ -10,6 +10,7 @@ contract no1s1data{
     address payable defaultuseracc;
     uint256 no1s1balance;
     uint256[] no1s1durations;
+   
 
     
     struct partner{
@@ -69,6 +70,11 @@ contract no1s1data{
       uint256 uuid;
       string username;
     }
+    
+    struct accLog{
+        uint256 numberOfusers;
+        uint256 balanceOfno1s1;
+    }
 
     struct UserUSAGE{
         address account;
@@ -89,6 +95,7 @@ contract no1s1data{
 
     Log[] public logs;
     User[] private users;
+    accLog[] public acclogs;
     //User[] public users;
     //UsageHistory[] private histories;
     //mapping (uint256 => Log[]) logs;
@@ -125,7 +132,7 @@ contract no1s1data{
     event no1s1update(uint batterystateofcharge);
     function broadcastData(uint256 _Bcurrent,uint256 _Bvoltage,uint256 _BSOC,uint256 _Pvoltage,uint256 _Pcurrent,uint256 _Senergy, uint256 _time)public onlyAdmin{
 
-        int weiperchf = 18e14;
+        int weiperchf = 34e13;
         //uint256 costpm = weiperchf; 
         uint256 current_energy=_BSOC;
         int256 _duration;
@@ -155,6 +162,14 @@ contract no1s1data{
         emit no1s1update(_BSOC);
     }
     
+    event accountInfo(uint256 usernumber, uint256 balance);
+    function accountInfoLog() public onlyAdmin{
+        acclogs.push(accLog(
+            {numberOfusers: users.length,
+            balanceOfno1s1: address(this).balance
+            }));
+        emit accountInfo(users.length,address(this).balance);
+    }
 
 
     event newUserRegistered(string userName,uint256 confirmationCode); 
@@ -175,7 +190,7 @@ contract no1s1data{
 
     function checkStatus()public view returns(int256 c_allowtime,uint256 estimated_cost ,uint256 update_time) {
       /*require (logs.length == 0, "no registered data yet");*/
-      int weiperchf = 18e14;
+      int weiperchf = 34e13;
       //uint256 costpm = weiperchf; 
       uint256 current_energy=logs[logs.length-1].batterystateofcharge;
       uint256 last_time=logs[logs.length-1].time;
@@ -183,7 +198,7 @@ contract no1s1data{
       if(current_energy >= 75 ){
             _duration = 40;}
         if(current_energy >= 45 ){
-            _duration = 20;()}
+            _duration = 20;}
         if(current_energy >= 25 ){
             _duration = 10;}
         if(current_energy <25 ){
@@ -221,12 +236,53 @@ contract no1s1data{
       emit whatuuid(lastuuid);
       return (lastuuid);
     }
+    //current information
     event mybalance(uint balance);
-    function balanceOf() public returns(){
-      return (this.balance);
-      emit mybalance(this.balance);
+    function balanceOf() public returns(uint256){
+      return (address(this).balance);
+      emit mybalance(address(this).balance);
     }
-
+    event userCount(uint numberOfusers);
+    function userNumber() public returns(uint256){
+        return (users.length);
+        emit userCount(users.length);
+    }
+    //record of last 10 current_energy
+    event accArrays(uint256[], uint256[]);
+    function periodInfo() public returns(uint256[] memory,uint256[] memory){
+        uint numberofRecords = 10 ;
+        if(acclogs.length>= numberofRecords){
+            uint256[] memory tenUsers = new uint256[](numberofRecords);
+            uint256[] memory tenBalances = new uint256[](numberofRecords);
+            for (uint i = 0; i<numberofRecords; i++){
+                tenUsers[i] = acclogs[acclogs.length-1-i].numberOfusers;
+                tenBalances[i] = acclogs[acclogs.length-1-i].balanceOfno1s1;
+                
+            }
+            return (tenUsers,tenBalances);
+            emit accArrays(tenUsers,tenBalances);
+        }
+        else if(acclogs.length < numberofRecords){
+            uint256[] memory tenUsers = new uint256[](acclogs.length);
+            uint256[] memory tenBalances = new uint256[](acclogs.length);
+            for (uint i = 0; i < acclogs.length; i++){
+                tenUsers[i] = acclogs[acclogs.length-1-i].numberOfusers;
+                tenBalances[i] = acclogs[acclogs.length-1-i].balanceOfno1s1;
+            }
+            return (tenUsers,tenBalances);
+            emit accArrays(tenUsers,tenBalances);
+        }
+        //    acclogs[acclogs.length-i].numberOfusers
+        //}  
+        //for (uint i = 0; i < tokenList[_account].length; i++)
+        //Member not found or visible after argument-dependent lookup in struct no1s1data.accLog storage
+        //return (acclogs.numberOfusers[acclogs.length-10:acclogs.length-1], acclogs.balanceOfno1s1[acclogs.length-10:acclogs.length-1]);
+        /////////////
+        //error index range access is only supported for dynamic calldata arrays
+        //return (acclogs[acclogs.length-10:acclogs.length-1].numberOfusers, acclogs[acclogs.length-10:acclogs.length-1].balanceOfno1s1); 
+         
+        //return (acclogs[acclogs.length-lastdig].numberOfusers,acclogs[acclogs.length-lastdig].balanceOfno1s1);
+    } 
     
     // function whatisuseruuid2() public view returns(uint256){
     //   uint256 lastuuid=users[users.length-1].uuid;
@@ -260,16 +316,19 @@ contract no1s1data{
     //     require (sent, "payment failed!");
     // }
 
-    function userPay(int _selectedDuration, string calldata _username, uint256 _selectedCost) external onlyDefault payable returns(uint256){
+    function userPay(int _selectedDuration, string calldata _username) external onlyDefault payable returns(uint256){
     /*msg.value* is survice cost*/
-    usersid[_username].payamount = _selectedCost;
+    usersid[_username].payamount = msg.value;
     usersid[_username].expectedduration = _selectedDuration;
     usersid[_username].ispaid = true;
-    no1s1balance = no1s1balance.add(_selectedCost);
+    int256 weiperchf = 34e13;
+    uint256 minPayment = uint256(_selectedDuration).mul(uint256(weiperchf));
+    require(msg.value >= minPayment, "must reach minimum payment amount!");
+    no1s1balance = no1s1balance.add(msg.value);
     toContract();
     usersid[_username].isidentified = true;
     usersusage[_username].grantedentrance =  true;
-    return _selectedCost; 
+    return msg.value; 
     /*address payable payacc=usersid[_username].account;*/
     /*(bool sent, bytes memory data) = usersid[_username].account.call{value: msg.value}("");*/
     /*ToContract{value:servicecost}(log1, log2, log3);*/
@@ -294,7 +353,7 @@ contract no1s1data{
       usersusage[_username].actualduration = _actualduration;
       usersusage[_username].timeex = _timeex;
       int256 durationdif_min = usersid[_username].expectedduration - int256(_actualduration);
-      int256 weiperchf = 18e14;
+      int256 weiperchf = 34e13;
       //uint256 costpm = weiperchf;
       int256 costdif = durationdif_min * weiperchf;
       no1s1durations.push(_actualduration);

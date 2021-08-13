@@ -54,6 +54,12 @@ export class BackdoorComponent implements OnInit {
   PVvoltage:any;
   systemenergy:any;
   Bstateofcharge:any;
+  userRegistered = false;
+
+  ///////////
+
+  regs = {username:"",ccode:"",time:"",uuid:""}
+  usernumber:any;
 
   constructor(private _smcService:SMCService, private renderer : Renderer2, config: NgbAccordionConfig) {config.closeOthers = true;
     config.type = 'info'; }
@@ -90,6 +96,26 @@ export class BackdoorComponent implements OnInit {
       that.dataLogged = true;
     })
   }
+
+  checkUsers(){
+    let that = this;
+    //console.log(this.usernumber);
+    this._smcService.UserNumber().then(function(data){
+      that.usernumber=data;
+      //console.log(that.usernumber);
+    })
+    //console.log(this.usernumber);
+  }
+
+  onReg(){
+    let that = this;
+    console.log(this.regs.username);
+    this._smcService.registerNewUser(this.regs.username,Number(this.regs.ccode),Number(this.regs.time),Number(this.regs.uuid)).then(function(data){
+      that.userRegistered = true;
+      console.log(this.regs.username);
+    })
+    console.log(this.regs.username);
+  }
   
   lastLog(){
     let that =this;
@@ -99,6 +125,14 @@ export class BackdoorComponent implements OnInit {
       that.Bstateofcharge=data[2];
     })
   }
+
+  onLogAccData(){
+    let that = this;
+    this._smcService.AccountInfoLog().then(function(data){
+    })
+  }
+
+
 
   ngOnDestroy(){
     var navbar = document.getElementsByTagName('nav')[0];

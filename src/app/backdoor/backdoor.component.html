@@ -46,6 +46,28 @@
         </div>
     </div>
 
+    <div class="section">
+        <div class="container">
+
+          <h3 class="title">Register user and log data</h3>
+          <div class="form-group">
+            <h5 class="description">uesr name</h5>
+            <input [value]="regs.username" (input)="regs.username=logdata($event)">
+            <h5 class="description">confirmation code</h5>
+            <input [value]="regs.ccode" (input)="regs.ccode=logdata($event)">
+            <h5 class="description">time</h5>
+            <input [value]="regs.time" (input)="regs.time=logdata($event)">
+            <h5 class="description">uuid</h5>
+            <input [value]="regs.uuid" (input)="regs.uuid=logdata($event)">
+
+            <button class="btn btn-info btn-block" (click)="onReg()">Log Data</button>
+          </div>
+          <button class="btn" (click)="checkUsers()">How many users?</button>
+          <h5 class="description">users number = {{usernumber}}</h5>  
+          <button class="btn btn-info btn-block" (click)="onLogAccData()">Log ACC Data</button>
+        </div>
+    </div>
+
     <app-basicelements></app-basicelements>
     <app-navigation></app-navigation>
     <div class="section section-tabs">
