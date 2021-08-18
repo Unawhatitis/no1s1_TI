@@ -29,6 +29,7 @@
     "@ng-bootstrap/ng-bootstrap": "6.0.0",
     "@openzeppelin/contracts": "^4.1.0",
     "@truffle/contract": "^4.3.26",
+    "@truffle/hdwallet-provider": "^1.4.3",
     "ajv": "6.10.0",
     "ajv-keywords": "3.4.0",
     "bootstrap": "4.0.0",

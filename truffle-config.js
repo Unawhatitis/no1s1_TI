@@ -22,7 +22,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
 //const fs = require('fs');
-const mnemonic = "assist cabin humble engage sibling pipe bridge daughter project mass shift spider";
+const mnemonic = "mandate oval clerk situate veteran amount between cliff enact page crack outside";
 //fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
@@ -50,11 +50,12 @@ module.exports = {
      },
      rinkeby: {
       provider: function() {
-      return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/<INFURA_Access_Token>");
+      return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/18bfdfec1ac54c66be412adba4fd4410");
       },
       network_id: 4,
       gas: 4500000,
       gasPrice: 10000000000,
+      //skipDryRun: true ,
       },
     // Another network with more advanced options...
     // advanced: {
