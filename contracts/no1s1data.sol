@@ -1,8 +1,10 @@
 pragma solidity >=0.5.16;
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "../node_modules/@openzeppelin/contracts/access/AccessControl.sol";
 
 contract no1s1data{
     using SafeMath for uint256;
+
 
     /********************************************************************************************/
     /*                                       DATA VARIABLES                                     */
@@ -133,11 +135,6 @@ contract no1s1data{
       adminacc=msg.sender;
     }
 
-    constructor(){
-      useracc=msg.sender;
-    }
-
-
     /********************************************************************************************/
     /*                                       FUNCTION MODIFIERS                                 */
     /********************************************************************************************/
@@ -182,9 +179,7 @@ contract no1s1data{
     * @return A bool that is the current operating status
     */
     function isOperational()
-                            external //because it is used in the app contract
-                            view
-                            returns(bool)
+                            external view returns (bool)
     {
         return operational;
     }
