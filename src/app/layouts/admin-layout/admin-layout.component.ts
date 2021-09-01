@@ -81,8 +81,9 @@ export class AdminLayoutComponent implements OnInit {
                 pointRadius: 0,
                 pointHoverRadius: 0,
                 borderWidth: 3,
-                data: new_data_user,
-                //[0, 100, 185, 213, 250, 268, 333, 345, 338, 354]
+                data: [0, 100, 185, 213, 250, 268, 333, 345, 338, 354],
+                //new_data_user,
+                
               },
             ]
           },
@@ -139,7 +140,8 @@ export class AdminLayoutComponent implements OnInit {
       var speedCanvas = document.getElementById("speedChart");
       that.ctx = that.canvas.getContext("2d");
       var dataFirst = {
-        data: new_data_balance, //[0, 19, 15, 20, 30, 40, 40, 50],
+        data: [0, 19, 15, 20, 30, 40, 40, 50],
+        //new_data_balance, 
         fill: false,
         borderColor: '#fbc658',
         backgroundColor: 'transparent',
