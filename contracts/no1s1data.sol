@@ -22,7 +22,7 @@ contract no1s1data{
         string companyname;
         address payable companyaccount;
         string partnertype;
-        uint256 workload;
+        uint256 workload; 
         uint256 workprice;
     }
     
