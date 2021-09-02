@@ -46,6 +46,28 @@
         </div>
     </div>
 
+    <div class="section">
+        <div class="container">
+
+          <h3 class="title">Register user and log data</h3>
+          <div class="form-group">
+            <h5 class="description">uesr name</h5>
+            <input [value]="regs.username" (input)="regs.username=logdata($event)">
+            <h5 class="description">confirmation code</h5>
+            <input [value]="regs.ccode" (input)="regs.ccode=logdata($event)">
+            <h5 class="description">time</h5>
+            <input [value]="regs.time" (input)="regs.time=logdata($event)">
+            <h5 class="description">uuid</h5>
+            <input [value]="regs.uuid" (input)="regs.uuid=logdata($event)">
+
+            <button class="btn btn-info btn-block" (click)="onReg()">Log Data</button>
+          </div>
+          <button class="btn" (click)="checkUsers()">How many users?</button>
+          <h5 class="description">users number = {{usernumber}}</h5>  
+          <button class="btn btn-info btn-block" (click)="onLogAccData()">Log ACC Data</button>
+        </div>
+    </div>
+
     <app-basicelements></app-basicelements>
     <app-navigation></app-navigation>
     <div class="section section-tabs">
@@ -407,16 +429,16 @@
         <div class="container text-center">
             <div class="row">
                 <div class="col">
-                    <a [routerLink]="['/examples/landing']">
+                    <a [routerLink]="['/team']">
                         <img src="assets/img/landing.jpg" alt="Image" class="img-raised">
                     </a>
-                    <a [routerLink]="['/examples/landing']" class="btn btn-simple btn-primary btn-round">View Landing Page</a>
+                    <a [routerLink]="['/team']" class="btn btn-simple btn-primary btn-round">View Landing Page</a>
                 </div>
                 <div class="col">
-                    <a [routerLink]="['/examples/profile']">
+                    <a [routerLink]="['/aboutme']">
                         <img src="assets/img/profile.jpg" alt="Image" class="img-raised">
                     </a>
-                    <a [routerLink]="['/examples/profile']" class="btn btn-simple btn-primary btn-round">View Profile Page</a>
+                    <a [routerLink]="['/aboutme']" class="btn btn-simple btn-primary btn-round">View Profile Page</a>
                 </div>
             </div>
         </div>
@@ -441,7 +463,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/examples/profile">
+                        <a href="/aboutme">
                             About Me
                         </a>
                     </li>
