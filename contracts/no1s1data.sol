@@ -1,143 +1,127 @@
 pragma solidity >=0.5.16;
+
+// SPDX-License-Identifier: MIT
+
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "../node_modules/@openzeppelin/contracts/access/AccessControl.sol";
+// import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract no1s1data{
+/************************************************** */
+/* no1s1 Data Smart Contract                        */
+/************************************************** */
+
+// TODO: is ERC721
+
+contract no1s1Data {
     using SafeMath for uint256;
-
 
     /********************************************************************************************/
     /*                                       DATA VARIABLES                                     */
     /********************************************************************************************/
 
-    address adminacc; //Account used to deploy contract
-    //address payable fundingacc; 
-    //address payable defaultuseracc;
-    address payable useracc;
-    uint256 no1s1balance;
-    uint256[] no1s1durations;
-    bool private operational = true; 
-    
-    struct partner{
-        string companyname;
-        address payable companyaccount;
-        string partnertype;
-        uint256 workload; 
-        uint256 workprice;
-    }
-    
-    struct component{
-        string materiallocation;
-        uint256 materialprice;
-        uint256 materialage;
-    }
-    
-    struct condition{
-        bool isrenovated;
-        uint256 countrenovation;
-        string[] renovationlocation;
-        string[] renovationprice;
-    }
-    
-    struct Material{
-        uint256 materialcount;
-        uint256 totalprice;
-        mapping (string => component) components;
-        mapping (string => condition) conditions;
-    }
-    
+    address private contractOwner;                  // Account used to deploy contract becomes contract admin
+    bool private operational = true;           // Main operational state of smart contract. Blocks all state changes throughout the contract if false
 
-    struct Log{
-      uint256 batterycurrent;
-      uint256 batteryvoltage;
-      uint256 batterystateofcharge;
-      uint256 pvvoltage;
-      uint256 pvcurrent;
-      uint256 systempower;
-      uint256 time;
-      //int256 allowedduration;
-      //uint256 cost;
+    // no1s1 main state variables
+    bool no1s1Accessability;                   // Whether no1s1 is accessible
+    bool no1s1Occupation;                      // Whether no1s1 is occupied
+    enum BatteryState
+    {
+        Full, // 0
+        Good,  // 1
+        Low, // 2
+        Empty  // 3
+    }                                           
+    BatteryState no1s1BatteryLevel;            // Battery level of no1s1
+
+    // User and Usage duration counters
+    uint256 counterUsers;
+    uint256 counterDuration;
+    // Escrow balance
+    uint256 escrowBalance;
+
+    // Data structure of no1s1 technical system log (hourly)
+    struct TechLog{
+        uint256 batteryCurrency;
+        uint256 batteryVoltage;
+        uint256 batteryChargeState;
+        uint256 pvVoltage;
+        uint256 systemPower;
+        uint256 time;
     }
 
-    struct UserID{
-      uint256 uuid;
-      uint256 timereg;
-      uint256 ccode;
-      address payable account;
-      int256 expectedduration;
-      uint256 payamount;
-      bool haveaccount;
-      bool isidentified;
-      bool ispaid;
+    // Data structure of no1s1 usage log (daily)
+    struct UsageLog{
+        uint256 totalBalance;
+        uint256 totalEscrow;
+        uint256 totalUsers;
+        uint256 totalDuration;
+        uint256 time;
     }
 
-    struct User{
-      uint256 uuid;
-      string username;
-    }
-    
-    struct accLog{
-        uint256 numberOfusers;
-        uint256 balanceOfno1s1;
+    // Data structure of no1s1 users
+    struct No1s1User {
+        uint256 boughtDuration;
+        bool accessed;
+        uint256 paidEscrow;
     }
 
-    struct UserUSAGE{
-        address account;
-        uint256 actualduration;
-        int256 paychangeamount;
-        uint256 timeex;
-        bool grantedentrance;
-        bool startedmeditation;
-        bool serviceclosed;
-        bool paychanged;
-        uint256 actualpayment;
-    }
+    // Arrays
+    TechLog[] public no1s1TechLogs;                         // Array to store history of system data logs with struct TechLog
+    UsageLog[] public no1s1UsageLogs;                       // Array to store history of system data logs with struct UsageLog
 
-    
-
-    /************arrays and mappings**************/
-
-
-    Log[] public logs;
-    User[] private users;
-    accLog[] public acclogs;
-    //User[] public users;
-    //UsageHistory[] private histories;
-    //mapping (uint256 => Log[]) logs;
-    //mapping (uint256 => No1s1[]) no1s1histories;
-    mapping(address => uint8) authorizedContracts;               // Mapping to store authorized contracts that can call into the data contract
-    mapping (string => UserID) public usersid;
-    mapping (string => UserUSAGE) public usersusage;
-    mapping (string => partner) public partners;
-
+    // Mappings (key value pairs)
+    mapping(address => uint256) authorizedContracts;        // Mapping to store authorized contracts that can call into the data contract
+    mapping(bytes32 => No1s1User) no1s1Users;               // Mapping to store authorized no1s1 users
 
     /********************************************************************************************/
     /*                                       EVENT DEFINITIONS                                  */
     /********************************************************************************************/
 
-    event no1s1update(uint batterystateofcharge);
-    event accountInfo(uint256 usernumber, uint256 balance);
-    event newUserRegistered(string userName,uint256 confirmationCode); 
-    event whatuuid(uint theuuid);
-    event mybalance(uint balance);
-    event userCount(uint numberOfusers);
-    event accArrays(uint256[], uint256[]);
-    event LastLog(uint pviv, uint soe, uint bsoc);
-    event userAction(bool userActionConfirmed);
-    //Emmitted when new contract is de-/authorized
+    // Emitted when new contract is de-/authorized
     event AuthorizedContract(address appContract);
     event DeAuthorizedContract(address appContract);
+    // Emitted when new tech log added
+    event TechLogUpdate(uint256 batteryCurrency,uint256 batteryVoltage, uint256 batteryStateOfCharge,uint256 pvVoltage, uint256 systemEnergy, uint256 logTime);
+    // Emitted when new usage log added
+    event UsageLogUpdate(uint256 no1s1Balance, uint256 escrowBalance, uint256 userCounter, uint256 durationCounter, uint256 logTime);
+    // Emitted when new purchase was made
+    event newQRcode(bytes32 qrCode);
+    // Emitted when access suceeded
+    event accessSuceeded(uint256 allowedTime);
+    // Emitted when access failed
+    event accessFailed(uint256 allowedTime);
+    // Emitted when user active
+    event userActive(bool userActive);
+    // Emitted when user inactive
+    event userInactive(bool userActive);
+    // Emitted when user inactive
+    event exitSuccessfull(uint256 totalMeditationTime, uint256 pricePaid, uint256 amountReturned);
 
     /********************************************************************************************/
     /*                                       CONSTRUCTOR                                        */
     /********************************************************************************************/
-    constructor(){
-      adminacc=msg.sender;
+    
+    /**
+    * @dev Constructor
+    *      Deploying the no1s1Data contract and the NFT contract for the no1s1 access token
+    *      The deploying account becomes contractOwner
+    */
+    // TODO: add ERC721("no1s1 token", "NO1S1") for ERC721 support
+    constructor()
+    {
+        contractOwner = msg.sender;
+        // Initiate state variables
+        no1s1Accessability = true;
+        no1s1Occupation = true;
+        no1s1BatteryLevel = BatteryState.Full;
+        counterUsers = 0;
+        counterDuration = 0;
     }
 
     /********************************************************************************************/
     /*                                       FUNCTION MODIFIERS                                 */
     /********************************************************************************************/
+
     /**
     * @dev Modifier that requires the "operational" boolean variable to be "true"
     *      This is used on all state changing functions to pause the contract in
@@ -149,37 +133,49 @@ contract no1s1data{
         _;
     }
 
-    modifier onlyAdmin{
-      require(msg.sender == adminacc,"Caller is not Admin");
+    /**
+    * @dev Modifier that requires the "contractOwner" account to be the function caller
+    */
+    modifier requireContractOwner()
+    {
+      require(msg.sender == contractOwner, "Caller is not contract owner");
       _;
     }
 
-
-    // modifier onlyFundacc{
-    //   require(msg.sender == fundingacc);
-    //   _;
-    // }
-    
-    // modifier onlyDefault{
-    //   require(msg.sender == defaultuseracc);
-    //   _;
-    // } 
-
-    modifier onlyUser{
-      require(msg.sender == useracc);
+    /**
+    * @dev Modifier that requires that the contract calling into the data contract is authorized
+    */
+    modifier isCallerAuthorized()
+    {
+        require(authorizedContracts[msg.sender] == 1, "Caller is not authorized");
+        _;
     }
 
+    /**
+    * @dev Modifier that checks whether no1s1 is accessible
+    */
+    modifier checkAccessability() {
+        require(no1s1Accessability == true, "no1s1 is currently closed.");
+        _;
+    }
+
+    /**
+    * @dev Modifier that checks whether no1s1 is occupied
+    */
+    modifier checkOccupancy() {
+        require(no1s1Occupation == true, "no1s1 is currently already occupied.");
+        _;
+    }
 
     /********************************************************************************************/
     /*                                       UTILITY FUNCTIONS                                  */
     /********************************************************************************************/
-    
-    /**
+
+   /**
     * @dev Get operating status of contract
     * @return A bool that is the current operating status
     */
-    function isOperational()
-                            external view returns (bool)
+    function isOperational() external view returns (bool)
     {
         return operational;
     }
@@ -189,27 +185,27 @@ contract no1s1data{
     *
     * When operational mode is disabled, all write transactions except for this one will fail
     */
-    function setOperatingStatus
-                            (
-                                bool mode
-                            )
-                            external
-                            onlyAdmin
+    function setOperatingStatus(bool mode) public requireContractOwner
     {
         operational = mode;
     }
 
-    // authorize app contract to call into data contract
-    function authorizeContract(address appContract) external onlyAdmin returns(bool)
+    /**
+    * @dev authorize app contract to call into data contract
+    * @return A bool that is the current authorization status
+    */
+    function authorizeContract(address appContract) public requireIsOperational requireContractOwner returns(bool)
     {
         authorizedContracts[appContract] = 1;
         emit AuthorizedContract(appContract);
         return true;
     }
 
-
-    // deauthorize app contract to call into data contract
-    function deAuthorizeContract(address appContract) public onlyAdmin returns(bool)
+    /**
+    * @dev deauthorize app contract to call into data contract
+    * @return A bool that is the current authorization status
+    */
+    function deAuthorizeContract(address appContract) public requireIsOperational requireContractOwner returns(bool)
     {
         delete authorizedContracts[appContract];
         emit DeAuthorizedContract(appContract);
@@ -217,263 +213,350 @@ contract no1s1data{
     }
 
     /********************************************************************************************/
-    /*                                     SMART CONTRACT FUNCTIONS                             */
+    /*               SMART CONTRACT FUNCTIONS (ONLY CALLABLE FROM APP CONTRACT)                 */
     /********************************************************************************************/
-    
+
     /**
-    * @dev Broadcast electrical data from backend to front-end
-    * @param _BSOC state of charge of the battery
-    * @param _Senergy system energy
-    * @param _time time of registration
-    * emit Return battery state of charge
+    * @dev function to modify the main state variable no1s1Accessability. This function is only for admins (not callable from app contract) to reset this state.
     */
-    function broadcastData(uint256 _Bcurrent,uint256 _Bvoltage,uint256 _BSOC,uint256 _Pvoltage,uint256 _Pcurrent,uint256 _Senergy, uint256 _time)public onlyAdmin{
+    function setAccessabilityStatus(bool mode) external isCallerAuthorized requireIsOperational
+    {
+        no1s1Accessability = mode;
+    }
 
-        int weiperchf = 34e13;
-        //uint256 costpm = weiperchf; 
-        uint256 current_energy=_BSOC;
-        //int256 _duration;
-        // if(current_energy >= 75 ){
-        //       _duration = 45;}
-        // if(current_energy >= 45 ){
-        //     _duration = 25;}
-        // if(current_energy >= 25 ){
-        //     _duration = 15;}
-        // if(current_energy <25 ){
-        //     _duration = 5;}
-        // uint256 _servicecost = uint256(_duration * weiperchf);
+    /**
+    * @dev function to modify the main state variable no1s1Occupation. This function is only for admins (not callable from app contract) to reset this state in case exiting the space is not detected
+    */
+    function setOccupationStatus(bool mode) external isCallerAuthorized requireIsOperational
+    {
+        no1s1Occupation = mode;
+    }
 
-        logs.push(Log(
-          {batterycurrent: _Bcurrent, 
-          batteryvoltage: _Bvoltage,
-          batterystateofcharge: _BSOC, 
-          pvvoltage: _Pvoltage,
-          pvcurrent: _Pcurrent,
-          systempower: _Senergy,
-          time:_time
+    /**
+    * @dev function for backend to broadcast technical state, store it in no1s1TechLogs, and modify the main state variable no1s1BatteryLevel (hourly?)
+    */
+    function broadcastData(uint256 _Bcurrent,uint256 _Bvoltage, uint256 _BSOC,uint256 _Pvoltage, uint256 _Senergy, uint256 _Time, uint256 FULL_VALUE, uint256 GOOD_VALUE, uint256 LOW_VALUE) external isCallerAuthorized requireIsOperational
+    {
+        // Add new tech data log
+        no1s1TechLogs.push(TechLog(
+          {
+            batteryCurrency: _Bcurrent,
+            batteryVoltage: _Bvoltage,
+            batteryChargeState: _BSOC,
+            pvVoltage: _Pvoltage,
+            systemPower: _Senergy,
+            time:_Time
           }
-          ));
-        
-        emit no1s1update(_BSOC);
-    }
-    
-    /**
-    * @dev Log user and account information periodically for easy record keeping
-    * emit Return number of users and account balance
-    */
-    function accountInfoLog() public onlyAdmin{
-        acclogs.push(accLog(
-            {numberOfusers: users.length,
-            balanceOfno1s1: address(this).balance
-            }));
-        emit accountInfo(users.length,address(this).balance);
-    }
-
-
-    /**
-    * @dev initiate a new user
-    * @param _username username defined by user
-    * @param _cCode confirmation code generated through email address (questionable with token system?)
-    * @param _uuid a unique id generated with uuid function (questionable with token system)
-    * emit the username and confirmation code
-    */
-    function initNewUser(string memory _username, uint256 _cCode, uint256 _time, uint256 _uuid) public {
-      require( usersid[_username].uuid ==  0 , "user name is taken");
-      usersid[_username].uuid = _uuid;
-      usersid[_username].timereg = _time;
-      usersid[_username].ccode = _cCode;
-      usersid[_username].account = useracc;
-      usersusage[_username].account = useracc;
-      users.push(User({uuid:_uuid,username:_username}));
-      //return _username;
-      emit newUserRegistered(_username, _cCode);
-      //do i calculate a uuid and ccode here?
-      //does it need emit? 
-      //does it need return
-    }
-    
-    
-    /**
-    * @dev user payment functions
-    * @param _selectedDuration duration defined by user
-    * @return the payed value
-    */
-    function userPay(int _selectedDuration, string calldata _username) external onlyUser payable returns(uint256){
-    /*msg.value* is survice cost*/
-    usersid[_username].payamount = msg.value;
-    usersid[_username].expectedduration = _selectedDuration;
-    usersid[_username].ispaid = true;
-    int256 weiperchf = 34e13;
-    uint256 minPayment = uint256(_selectedDuration).mul(uint256(weiperchf));
-    require(msg.value >= minPayment, "must reach minimum payment amount!");
-    no1s1balance = no1s1balance.add(msg.value);
-    toContract();
-    usersid[_username].isidentified = true;
-    usersusage[_username].grantedentrance =  true;
-    return msg.value; 
-    }
-
-
-    function toContract() public payable {
-        
-    }
-    
-    /**
-    * @dev backend sensor data to confirm the activity of user
-    * @param _dooropened electrical door status
-    */
-    function userActive(bool _pressuredetected, bool _dooropened, bool _motiondetected, string memory _username) public {
-      require(_pressuredetected == true && _dooropened == true && _motiondetected == true, "user activity action not detected!");
-      usersusage[_username].startedmeditation = true;
-      emit userAction(true);
+        ));
+        // Update battery state
+        // TODO: adjust logic that it is based on battery voltage and currency
+        if(_BSOC >= FULL_VALUE){
+            no1s1BatteryLevel = BatteryState.Full;
+        }
+        else if (_BSOC >= GOOD_VALUE){
+            no1s1BatteryLevel = BatteryState.Good;
+        }
+        else if (_BSOC >= LOW_VALUE){
+            no1s1BatteryLevel = BatteryState.Low;
+        }
+        else {
+            no1s1BatteryLevel = BatteryState.Empty;
+        }
+        // Emit event
+        emit TechLogUpdate(_Bcurrent, _Bvoltage, _BSOC, _Pvoltage, _Senergy, _Time);
     }
 
     /**
-    * @dev service closed upon exit
-    * @param _actualduration user actual duration (need to figure out how to calculate this)
-    * @return array duration
+    * @dev function for backend to trigger storing the current state of no1s1 (daily)
     */
-    function serviceClose(bool _motiondetected, bool _dooropened, bool _handletriggered, string memory _username, uint256 _actualduration, uint256 _timeex) public returns (uint) {
-      require(_handletriggered == true && _dooropened == true && _motiondetected == true, "user leave action not detected!");
-      usersusage[_username].actualduration = _actualduration;
-      usersusage[_username].timeex = _timeex;
-      int256 durationdif_min = usersid[_username].expectedduration - int256(_actualduration);
-      int256 weiperchf = 34e13;
-      //uint256 costpm = weiperchf;
-      int256 costdif = durationdif_min * weiperchf;
-      no1s1durations.push(_actualduration);
-      if (durationdif_min > 10 || durationdif_min < -10){
-        usersusage[_username].paychanged = true; 
-        usersusage[_username].paychangeamount = costdif;
-        usersusage[_username].actualpayment = uint256(int256(usersid[_username].payamount) + costdif);
-        no1s1balance= uint256(int256(no1s1balance)+costdif);
-        usersusage[_username].serviceclosed = true;
-      }
-      if ( durationdif_min < 10 && durationdif_min > -10){
-          usersusage[_username].actualpayment=usersid[_username].payamount;
-          usersusage[_username].serviceclosed = true;
-      }
-      return no1s1durations.length;
+    function no1s1InfoLog(uint256 _Time) external isCallerAuthorized requireIsOperational
+    {
+        // Add new usage data log
+        no1s1UsageLogs.push(UsageLog(
+          {
+            totalBalance: address(this).balance,
+            totalEscrow: escrowBalance,
+            totalUsers: counterUsers,
+            totalDuration: counterDuration,
+            time: _Time
+          }
+        ));
+        // Emit event
+        emit UsageLogUpdate(address(this).balance, escrowBalance, counterUsers, counterDuration, _Time);
+    }
+
+    /**
+    * @dev buy function to access no1s1, returns QR code
+    */
+    function buy(uint256 _selectedDuration, address txSender, string calldata _username, uint256 ESCROW_AMOUNT, uint256 MAX_DURATION, uint256 GOOD_DURATION, uint256 LOW_DURATION) external payable isCallerAuthorized requireIsOperational checkAccessability checkOccupancy
+    {
+        // check whether no1s1 is accessible and not occupied (modifiers in function headers)
+        // check whether the entered duration is below the maximum duration
+        require(_selectedDuration <= MAX_DURATION, "You request is longer than the maximum allowed meditation duration.");
+        // check if the sent amount is sufficient to cover the escrow
+        require(msg.value >= ESCROW_AMOUNT, "Not enough Ether provided.");
+        // check whether no1s1 battery level is sufficient for chosen meditation time
+        // TODO: do not hardcode! pass from app contract
+        if(_selectedDuration >= GOOD_DURATION){
+            require(no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
+        }
+        else if (_selectedDuration >= LOW_DURATION){
+            require(no1s1BatteryLevel == BatteryState.Good, "no1s1 battery level not sufficient for selected duration.");
+        }
+        else if (_selectedDuration > 0){
+            require(no1s1BatteryLevel == BatteryState.Low, "no1s1 battery level not sufficient for selected duration.");
+        }
+        // create key to store this order
+        bytes32 key = keccak256(abi.encodePacked(txSender, _username)); // username to generate key so QR code is != address
+        // check whether user has already bought meditation time
+        require(no1s1Users[key].accessed != true, "You already bought meditation time for no1s1.");
+        // add new no1s1 user
+        no1s1Users[key] = No1s1User({
+            boughtDuration: _selectedDuration,
+            accessed: true,
+            paidEscrow: msg.value
+        });
+        // Update total escrow balance
+        escrowBalance = escrowBalance.add(msg.value);
+        // mit event with QR code (key)
+        emit newQRcode(key);
+    }
+
+    /**
+    * @dev function triggered by backend to check whether QR code is valid and authorizes to unlock door
+    * @param _key QR code detected by camera
+    * returns allowed duration to enter (if 0, door could stay locked)
+    */
+    //TODO: trigger timer in back-end?
+    function checkAccess(bytes32 _key, uint256 GOOD_DURATION, uint256 LOW_DURATION) external isCallerAuthorized requireIsOperational checkAccessability checkOccupancy
+    {
+        uint256 allowedDuration = no1s1Users[_key].boughtDuration;
+        if (allowedDuration != 0) {
+            // check again whether no1s1 is accessible and not occupied (modifiers in function headers)
+            // check again battery status
+            if(allowedDuration >= GOOD_DURATION){
+            require(no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
+            }
+            else if (allowedDuration >= LOW_DURATION){
+                require(no1s1BatteryLevel == BatteryState.Good, "no1s1 battery level not sufficient for selected duration.");
+            }
+            else if (allowedDuration > 0){
+                require(no1s1BatteryLevel == BatteryState.Low, "no1s1 battery level not sufficient for selected duration.");
+            }
+            // update occupancy status so noone else can buy access
+            no1s1Occupation = false;
+            // emit event to unlock door for allowed duration
+            emit accessSuceeded(allowedDuration);
+        }
+        else {
+            // emit event
+            emit accessFailed(0);
+        }
+    }
+
+    /**
+    * @dev function triggered by back-end shortly after access() function with sensor feedback (door openend, motion detected)
+    * if user has not entered, set occupancy back to not occupied and lock door
+    */
+    //TODO: only back end role
+    function checkActivity(bool _pressureDetected, bytes32 _key) external isCallerAuthorized requireIsOperational
+    {
+        // check whether access has already been registered
+        require(no1s1Users[_key].accessed == true, "Your access has already been registered.");
+        // check wether user entered the space.
+        // TODO: more sensors? motion?
+        if (_pressureDetected == true) {
+            // User is active! All good! Update user infromation to redeemed
+            uint256 escrow = no1s1Users[_key].paidEscrow;
+            no1s1Users[_key] = No1s1User({
+                boughtDuration: 0,
+                accessed: false,
+                paidEscrow: escrow
+            });
+            // Emit event
+            emit userActive(true);
+        }
+        else {
+            // If not active, revert occupancy state to not occupied
+            no1s1Occupation = true;
+            // Emit event
+            emit userInactive(false);
+        }
+    }
+
+    /**
+    * @dev function triggered by user after leaving no1s1. resets the occupancy state, pays back escrow, and sends out confirmation NFT
+    */
+    // TODO: careful with input format of _actualDuration
+    function exit(bool _doorOpened, address _sender, string calldata _username, uint256 _actualDuration, uint256 MEDITATION_PRICE) external isCallerAuthorized requireIsOperational
+    {
+        // recalculate key
+        bytes32 key = keccak256(abi.encodePacked(_sender, _username));
+        // check whether user has actually redeemed access (entered the space)
+        require(no1s1Users[key].accessed == true, "You cannot redeem your escrow, because you have not meditated yet!");
+        // check whether user left. TODO: more sensors?
+        require(_doorOpened == true, "You cannot redeem your escrow because you have not left the space yet!");
+        // update occupancy state
+        no1s1Occupation = true;
+        // check overtime and charge additional fee
+        // TODO: consider also shorter meditation time?
+        // calculate price for the entered duration
+        uint256 price = uint256(_actualDuration).mul(uint256(MEDITATION_PRICE));
+        // update counters
+        counterUsers = counterUsers.add(1);
+        counterDuration = counterDuration.add(_actualDuration);
+        // Update total escrow balance
+        uint256 escrow = no1s1Users[key].paidEscrow;
+        escrowBalance = escrowBalance.sub(escrow);
+        // Calculate amount to return
+        uint256 amountToReturn = uint256(escrow).sub(uint256(price));
+        // check if payable duration is smaller then escrow
+        if (escrow <= price) {
+            // update user state related to escrow
+            no1s1Users[key] = No1s1User({
+                boughtDuration: 0,
+                accessed: false,
+                paidEscrow: 0
+            });
+            revert("You mediated longer than the paid escrow. You get no ETH back");
+        }
+        else {
+            // update user state related to escrow
+            no1s1Users[key] = No1s1User({
+                boughtDuration: 0,
+                accessed: false,
+                paidEscrow: 0
+            });
+            // send remaining escrow balance back to buyer
+            payable(_sender).transfer(amountToReturn);
+            //TODO: mint NFT and send to user, use user counter as ID (unique)
+            //_safeMint(_sender, counterUsers);
+        }
+        // emit event
+        emit exitSuccessfull(_actualDuration, price, amountToReturn);
     }
 
     /********************************************************************************************/
     /*                                SMART CONTRACT VIEW FUNCTIONS                             */
     /********************************************************************************************/
     
-    function whatismyacc() public view returns(address payable,address){
-        return (useracc,address(this));
-    }
-    
-    function whatismybalance() public view returns(uint256,uint256){
-        return (no1s1balance, address(this).balance);
+    /**
+    * @dev Get operating status of no1s1 (main state variables)
+    */
+    function howAmI() external view returns (bool accessability, bool occupation, uint256 batteryState, uint256 totalUsers, uint256 totalDuration, uint256 myBalance)
+    {
+        return (accessability = no1s1Accessability, occupation = no1s1Occupation, batteryState = uint256(no1s1BatteryLevel), totalUsers = counterUsers, totalDuration = counterDuration, myBalance = address(this).balance);
     }
 
-    
-    function whatisuseruuid() public returns(uint256){
-      uint256 lastuuid=users[users.length-1].uuid;
-      emit whatuuid(lastuuid);
-      return (lastuuid);
+    /**
+    * @dev Get address of no1s1
+    */
+    function whoAmI() external view returns(address)
+    {
+        return (address(this));
     }
-    //current information
-    
-    function balanceOf() public returns(uint256){
-      return (address(this).balance);
-      emit mybalance(address(this).balance);
-    }
-    
-    function userNumber() public returns(uint256){
-        return (users.length);
-        emit userCount(users.length);
-    }
-    //record of last 10 current_energy
-    
-    function periodInfo() public returns(uint256[] memory,uint256[] memory){
-        uint numberofRecords = 10 ;
-        if(acclogs.length>= numberofRecords){
-            uint256[] memory tenUsers = new uint256[](numberofRecords);
-            uint256[] memory tenBalances = new uint256[](numberofRecords);
-            for (uint i = 0; i<numberofRecords; i++){
-                tenUsers[i] = acclogs[acclogs.length-1-i].numberOfusers;
-                tenBalances[i] = acclogs[acclogs.length-1-i].balanceOfno1s1;
-                
-            }
-            return (tenUsers,tenBalances);
-            emit accArrays(tenUsers,tenBalances);
-        }
-        else if(acclogs.length < numberofRecords){
-            uint256[] memory tenUsers = new uint256[](acclogs.length);
-            uint256[] memory tenBalances = new uint256[](acclogs.length);
-            for (uint i = 0; i < acclogs.length; i++){
-                tenUsers[i] = acclogs[acclogs.length-1-i].numberOfusers;
-                tenBalances[i] = acclogs[acclogs.length-1-i].balanceOfno1s1;
-            }
-            return (tenUsers,tenBalances);
-            emit accArrays(tenUsers,tenBalances);
-        }
-    } 
 
-    function checkStatus()public view returns(int256 c_allowtime,uint256 estimated_cost ,uint256 update_time) {
-      /*require (logs.length == 0, "no registered data yet");*/
-      int weiperchf = 34e13;
-      //uint256 costpm = weiperchf; 
-      uint256 current_energy=logs[logs.length-1].batterystateofcharge;
-      uint256 last_time=logs[logs.length-1].time;
-      int256 _duration;
-      if(current_energy >= 75 ){
-            _duration = 40;}
-        if(current_energy >= 45 ){
-            _duration = 20;}
-        if(current_energy >= 25 ){
-            _duration = 10;}
-        if(current_energy <25 ){
-            _duration = 5;}
-        uint256 servicecost = uint256(_duration * weiperchf);
-        return (_duration,servicecost,last_time);
+    /**
+    * @dev Get balance of no1s1 (without escrow paid)
+    */
+    function howRichAmI() external view returns(uint256)
+    {
+        return (address(this).balance.sub(escrowBalance));
+    }    
+
+    /**
+    * @dev get latest entries of UsageLog (max 10)
+    */
+    function getUsageLog() external view returns(uint256[] memory users, uint256[] memory balances, uint256[] memory durations)
+    {
+        uint numberOfRecords = 10;
+        if (no1s1UsageLogs.length >= numberOfRecords){
+            uint256[] memory tenUsers = new uint256[](numberOfRecords);
+            uint256[] memory tenBalances = new uint256[](numberOfRecords);
+            uint256[] memory tenEscrows = new uint256[](numberOfRecords);
+            uint256[] memory tenDuration = new uint256[](numberOfRecords);
+            for (uint i = 0; i < numberOfRecords; i++){
+                tenUsers[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalUsers;
+                tenBalances[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalBalance;
+                tenEscrows[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalEscrow;
+                tenDuration[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalDuration;
+            }
+            return (tenUsers, tenBalances, tenDuration);
+        }
+        else if (no1s1UsageLogs.length < numberOfRecords){
+            uint256[] memory xUsers = new uint256[](no1s1UsageLogs.length);
+            uint256[] memory xBalances = new uint256[](no1s1UsageLogs.length);
+            uint256[] memory xEscrows = new uint256[](no1s1UsageLogs.length);
+            uint256[] memory xDuration = new uint256[](no1s1UsageLogs.length);
+            for (uint i = 0; i < no1s1UsageLogs.length; i++){
+                xUsers[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalUsers;
+                xBalances[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalBalance;
+                xEscrows[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalEscrow;
+                xDuration[i] = no1s1UsageLogs[no1s1UsageLogs.length-1-i].totalDuration;
+            }
+            return (xUsers, xBalances, xDuration);
+        }
     }
-    
-    function mylastlogs() public returns(uint256,uint256,uint256){
-      uint256 lastPVIV=logs[logs.length-1].pvvoltage;
-      uint256 lastSOE=logs[logs.length-1].systempower;
-      uint256 lastBSoC=logs[logs.length-1].batterystateofcharge;
-      //int256 lastAD=logs[logs.length-1].allowedduration;
-      //uint256 lastC=logs[logs.length-1].cost;
-      emit LastLog(lastPVIV,lastSOE,lastBSoC);
-      return (lastPVIV,lastSOE,lastBSoC);
+
+    /**
+    * @dev retrieve values needed to buy meditation time
+    */
+    function checkBuyStatus(uint256 MEDITATION_PRICE) external view returns(uint256 state, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate)
+    {
+        // uint256 stateOfCharge = no1s1TechLogs[no1s1TechLogs.length-1].batterystateofcharge;
+        uint256 batteryState = uint256(no1s1BatteryLevel);
+        uint256 time = no1s1TechLogs[no1s1TechLogs.length-1].time;
+        uint256 duration;
+        // TODO: do not hardcode durations?
+        if (batteryState == 0){
+            duration = 45;}
+        else if (batteryState == 1){
+            duration = 30;}
+        else if(batteryState == 2){
+            duration = 10;}
+        else if(batteryState == 3){
+            duration = 0;}
+        return (batteryState, duration, MEDITATION_PRICE, time);
     }
+
+    /**
+    * @dev retrieve the latest technical logs
+    */ 
+    function checkLastTechLogs() external view returns(uint256, uint256, uint256, uint256, uint256)
+    {
+        uint256 lastPVIV = no1s1TechLogs[no1s1TechLogs.length-1].pvVoltage;
+        uint256 lastSOE = no1s1TechLogs[no1s1TechLogs.length-1].systemPower;
+        uint256 lastBSoC = no1s1TechLogs[no1s1TechLogs.length-1].batteryChargeState;
+        uint256 lastBCurrency = no1s1TechLogs[no1s1TechLogs.length-1].batteryCurrency;
+        uint256 lastBVoltage = no1s1TechLogs[no1s1TechLogs.length-1].batteryVoltage;
+        return (lastPVIV, lastSOE, lastBSoC, lastBCurrency, lastBVoltage);
+    }
+
+    /**
+    * @dev retrieve user information with key (QR code)
+    */ 
+    function checkUserKey(bytes32 _key) external view returns(uint256 meditationDuration, bool accessed, uint256 escrow)
+    {
+        return (no1s1Users[_key].boughtDuration, no1s1Users[_key].accessed, no1s1Users[_key].paidEscrow);
+    }
+
+    /**
+    * @dev retrieve user information with username
+    */ 
+    function checkUserName(address _sender, string calldata _username) external view returns(bytes32 qrCode, uint256 meditationDuration, bool accesseds, uint256 escrow)
+    {
+        bytes32 key = keccak256(abi.encodePacked(_sender, _username));
+        return (key, no1s1Users[key].boughtDuration, no1s1Users[key].accessed, no1s1Users[key].paidEscrow);
+    }
+
 
     /********************************************************************************************/
-    /*                              SMART CONTRACT FUTURE FUNCTIONS                             */
+    /*                                SMART CONTRACT FALLBACK FUNCTION                         */
     /********************************************************************************************/
 
-    function setPartner(string memory _partnername, address payable _partnerAddress,string memory _companyname,string memory _partnertype, uint256 _workload,uint256 _workprice) public onlyAdmin{
-    partners[_partnername].companyname=_companyname;
-    partners[_partnername].companyaccount= _partnerAddress;
-    partners[_partnername].partnertype= _partnertype;
-    partners[_partnername].workload= _workload;
-    partners[_partnername].workprice= _workprice;
-    }
-
-    // function setUserAccounts(address payable _fundingAddress, address payable _defaultAddress)public onlyAdmin{
-    //   require(_fundingAddress != address(0));
-    //   fundingacc=_fundingAddress;
-    //   defaultuseracc =_defaultAddress;
-    // }
-    
-    // function mylastlogsV() public view returns(uint256,uint256,uint256){
-    //   uint256 lastPVIV=logs[logs.length-1].pvvoltage;
-    //   uint256 lastSOE=logs[logs.length-1].systempower;
-    //   uint256 lastBSoC=logs[logs.length-1].batterystateofcharge;
-    //   return (lastPVIV,lastSOE,lastBSoC);
-    // }
-
-
-    /*exucable once every season*/
-    // function fundDefault()external onlyFundacc payable{
-    //     address payable _to = defaultuseracc;
-    //     (bool sent, bytes memory data) = _to.call;/*{value: msg.value}("");*/
-    //     require (sent, "payment failed!");
-    // }
-
-
+    /**
+    * @dev Payable fallback function to enable the contract to receive direct payments.
+    */
+    fallback () external payable isCallerAuthorized requireIsOperational {}
 
 }
