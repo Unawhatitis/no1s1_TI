@@ -309,11 +309,11 @@ contract no1s1Data {
         // create key to store this order
         bytes32 key = keccak256(abi.encodePacked(txSender, _username)); // username to generate key so QR code is != address
         // check whether user has already bought meditation time
-        require(no1s1Users[key].accessed != true, "You already bought meditation time for no1s1.");
+        require(no1s1Users[key].boughtDuration != 0, "You already bought meditation time for no1s1.");
         // add new no1s1 user
         no1s1Users[key] = No1s1User({
             boughtDuration: _selectedDuration,
-            accessed: true,
+            accessed: false,
             actualDuration: 0,
             left: false,
             paidEscrow: msg.value
@@ -360,7 +360,6 @@ contract no1s1Data {
     * @dev function triggered by back-end shortly after access() function with sensor feedback (door openend, motion detected)
     * if user has not entered, set occupancy back to not occupied and lock door
     */
-    //TODO: only back end role
     function checkActivity(bool _pressureDetected, bytes32 _key) external isCallerAuthorized requireIsOperational
     {
         // check whether access has already been registered
@@ -372,7 +371,7 @@ contract no1s1Data {
             uint256 escrow = no1s1Users[_key].paidEscrow;
             no1s1Users[_key] = No1s1User({
                 boughtDuration: 0,
-                accessed: false,
+                accessed: true,
                 actualDuration: 0,
                 left: false,
                 paidEscrow: escrow
@@ -391,13 +390,13 @@ contract no1s1Data {
     /**
     * @dev function triggered by backend after leaving no1s1. resets the occupancy state.
     */
-    // TODO: careful with input format of _actualDuration
+    // TODO: careful with input format of _actualDuration [minutes]
     function exit(bool _doorOpened, uint256 _actualDuration, bytes32 _key) external isCallerAuthorized requireIsOperational
     {
-        // check whether user has actually redeemed access (entered the space)
-        require(no1s1Users[_key].accessed == true, "You cannot redeem your escrow, because you have not meditated yet!");
+        // check whether user has accessed
+        require(no1s1Users[_key].accessed == false, "You have not meditated yet!");
         // check whether user left. TODO: more sensors?
-        require(_doorOpened == true, "You cannot redeem your escrow because you have not left the space yet!");
+        require(_doorOpened == true, "You have not left the space yet!");
         // update occupancy state
         no1s1Occupation = true;
         // update counters
@@ -407,7 +406,7 @@ contract no1s1Data {
         uint256 escrow = no1s1Users[_key].paidEscrow;
         no1s1Users[_key] = No1s1User({
             boughtDuration: 0,
-            accessed: false,
+            accessed: true,
             actualDuration: _actualDuration,
             left: true,
             paidEscrow: escrow
@@ -437,7 +436,7 @@ contract no1s1Data {
         uint256 amountToReturn = uint256(escrow).sub(uint256(price));
         // check if payable duration is smaller then escrow
         if (escrow <= price) {
-            // update user state related to escrow
+            // reset user state
             no1s1Users[key] = No1s1User({
                 boughtDuration: 0,
                 accessed: false,
@@ -448,7 +447,7 @@ contract no1s1Data {
             amountToReturn = 0;
         }
         else {
-            // update user state related to escrow
+            // reset user state
             no1s1Users[key] = No1s1User({
                 boughtDuration: 0,
                 accessed: false,
