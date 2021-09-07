@@ -530,19 +530,18 @@ contract no1s1Data {
     /**
     * @dev retrieve values needed to buy meditation time
     */
-    function checkBuyStatus(uint256 MEDITATION_PRICE) external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate)
+    function checkBuyStatus(uint256 MEDITATION_PRICE, uint256 FULL_DURATION, uint256 GOOD_DURATION, uint256 LOW_DURATION) external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate)
     {
         // uint256 stateOfCharge = no1s1TechLogs[no1s1TechLogs.length-1].batterystateofcharge;
         uint256 batteryLevel = uint256(no1s1BatteryLevel);
         uint256 time = no1s1TechLogs[no1s1TechLogs.length-1].time;
         uint256 duration;
-        // TODO: do not hardcode durations?
         if (batteryLevel == 0){
-            duration = 45;}
+            duration = FULL_DURATION;}
         else if (batteryLevel == 1){
-            duration = 30;}
+            duration = GOOD_DURATION;}
         else if(batteryLevel == 2){
-            duration = 10;}
+            duration = LOW_DURATION;}
         else if(batteryLevel == 3){
             duration = 0;}
         return (batteryLevel, duration, MEDITATION_PRICE, time);
@@ -551,7 +550,7 @@ contract no1s1Data {
     /**
     * @dev retrieve the latest technical logs
     */ 
-    function checkLastTechLogs() external view returns(uint256, uint256, uint256, uint256, uint256)
+    function checkLastTechLogs() external view returns(uint256 pvVoltage, uint256 systemPower, uint256 batteryChargeState, uint256 batteryCurrency, uint256 batteryVoltage)
     {
         uint256 lastPVIV = no1s1TechLogs[no1s1TechLogs.length-1].pvVoltage;
         uint256 lastSOE = no1s1TechLogs[no1s1TechLogs.length-1].systemPower;
