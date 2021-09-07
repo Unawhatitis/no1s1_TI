@@ -27,6 +27,7 @@ contract no1s1App {
     uint256 private constant GOOD_VALUE = 45;
     uint256 private constant LOW_VALUE = 25;
     // Minimum duration for given battery state of charge
+    uint256 private constant FULL_DURATION = 60;
     uint256 private constant GOOD_DURATION = 30;
     uint256 private constant LOW_DURATION = 10;
     
@@ -228,7 +229,7 @@ contract no1s1App {
     */
     function checkBuyStatus() external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate)
     {
-        return no1s1Data.checkBuyStatus(MEDITATION_PRICE);
+        return no1s1Data.checkBuyStatus(MEDITATION_PRICE, FULL_DURATION, GOOD_DURATION, LOW_DURATION);
     }
 
     /**
@@ -277,7 +278,7 @@ interface No1s1Data {
     function whoAmI() external view returns(address no1s1Address);
     function howRichAmI() external view returns(uint256 no1s1Balance);
     function getUsageLog() external view returns(uint256[] memory users, uint256[] memory balances, uint256[] memory durations);
-    function checkBuyStatus(uint256 MEDITATION_PRICE) external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate);
+    function checkBuyStatus(uint256 MEDITATION_PRICE, uint256 FULL_DURATION, uint256 GOOD_DURATION, uint256 LOW_DURATION) external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate);
     function checkLastTechLogs() external view returns(uint256 pvVoltage, uint256 systemPower, uint256 batteryChargeState, uint256 batteryCurrency, uint256 batteryVoltage);
     function checkUserKey(bytes32 _key) external view returns(uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow);
     function checkUserName(address, string calldata _username) external view returns(bytes32 qrCode, uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow);
