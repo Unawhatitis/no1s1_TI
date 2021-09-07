@@ -37,7 +37,7 @@ contract no1s1App {
     /*                                       EVENT DEFINITIONS                                  */
     /********************************************************************************************/
 
-    // Emitted when new contract is de-/authorized
+    // Emitted when new backend is de-/authorized
     event AuthorizedBackend(address backendAddress);
     event DeAuthorizedBackend(address backendAddress);
 
@@ -172,9 +172,17 @@ contract no1s1App {
     /**
     * @dev function triggered by user after leaving no1s1. resets the occupancy state, pays back escrow, and sends out confirmation NFT
     */
-    function exit(bool _doorOpened, string calldata _username, uint256 _actualDuration) external
+    function exit(bool _doorOpened, uint256 _actualDuration, bytes32 _key) external requireBackend
     {
-        no1s1Data.exit(_doorOpened, msg.sender, _username, _actualDuration, MEDITATION_PRICE);
+        no1s1Data.exit(_doorOpened, _actualDuration, _key);
+    }
+
+    /**
+    * @dev function triggered by user after leaving no1s1. resets the occupancy state, pays back escrow, and sends out confirmation NFT
+    */
+    function refundEscrow(string calldata _username) external
+    {
+        no1s1Data.refundEscrow(msg.sender, _username, MEDITATION_PRICE);
     }
 
     // call from data contract
@@ -186,7 +194,7 @@ contract no1s1App {
     /**
     * @dev Get operating status of no1s1 (main state variables)
     */
-    function howAmI() external view returns (bool, bool, uint256, uint256, uint256, uint256)
+    function howAmI() external view returns (bool accessability, bool occupation, uint256 batteryState, uint256 totalUsers, uint256 totalDuration, uint256 myBalance)
     {
         return no1s1Data.howAmI();
     }
@@ -194,7 +202,7 @@ contract no1s1App {
     /**
     * @dev Get address of no1s1
     */
-    function whoAmI() external view returns(address)
+    function whoAmI() external view returns(address no1s1Address)
     {
         return no1s1Data.whoAmI();
     }
@@ -202,7 +210,7 @@ contract no1s1App {
     /**
     * @dev Get balance of no1s1
     */
-    function howRichAmI() external view returns(uint256)
+    function howRichAmI() external view returns(uint256 no1s1Balance)
     {
         return no1s1Data.howRichAmI();
     }
@@ -210,7 +218,7 @@ contract no1s1App {
     /**
     * @dev get latest entries of UsageLog (max 10)
     */
-    function getUsageLog() external view returns(uint256[] memory, uint256[] memory, uint256[] memory)
+    function getUsageLog() external view returns(uint256[] memory users, uint256[] memory balances, uint256[] memory durations)
     {
         return no1s1Data.getUsageLog();
     }
@@ -218,7 +226,7 @@ contract no1s1App {
     /**
     * @dev retrieve values needed to buy meditation time
     */
-    function checkBuyStatus() external view returns(uint256, uint256, uint256 , uint256)
+    function checkBuyStatus() external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate)
     {
         return no1s1Data.checkBuyStatus(MEDITATION_PRICE);
     }
@@ -226,7 +234,7 @@ contract no1s1App {
     /**
     * @dev retrieve the latest technical logs
     */ 
-    function checkLastTechLogs() external view returns(uint256, uint256, uint256, uint256, uint256)
+    function checkLastTechLogs() external view returns(uint256 pvVoltage, uint256 systemPower, uint256 batteryChargeState, uint256 batteryCurrency, uint256 batteryVoltage)
     {
         return no1s1Data.checkLastTechLogs();
     }
@@ -234,7 +242,7 @@ contract no1s1App {
     /**
     * @dev retrieve user information with key (QR code)
     */ 
-    function checkUserKey(bytes32 _key) external view returns(uint256, bool, uint256)
+    function checkUserKey(bytes32 _key) external view returns(uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow)
     {
         return no1s1Data.checkUserKey(_key);
     }
@@ -242,7 +250,7 @@ contract no1s1App {
     /**
     * @dev retrieve user information with username
     */ 
-    function checkUserName(string calldata _username) external view returns(bytes32, uint256, bool, uint256)
+    function checkUserName(string calldata _username) external view returns(bytes32 qrCode, uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow)
     {
         return no1s1Data.checkUserName(msg.sender, _username);
     }
@@ -262,14 +270,15 @@ interface No1s1Data {
     function buy(uint256 _selectedDuration, address txSender, string calldata _username, uint256 ESCROW_AMOUNT, uint256 MAX_DURATION, uint256 GOOD_DURATION, uint256 LOW_DURATION) external payable;
     function checkAccess(bytes32 _key, uint256 GOOD_DURATION, uint256 LOW_DURATION) external;
     function checkActivity(bool _pressureDetected, bytes32 _key) external;
-    function exit(bool _doorOpened, address txSender, string calldata _username, uint256 _actualDuration, uint256 MEDITATION_PRICE) external;
+    function exit(bool _doorOpened, uint256 _actualDuration, bytes32 _key) external;
+    function refundEscrow(address _sender, string calldata _username, uint256 MEDITATION_PRICE) external;
     function isOperational() external view returns(bool);
-    function howAmI() external view returns (bool, bool, uint256, uint256, uint256, uint256);
-    function whoAmI() external view returns(address);
-    function howRichAmI() external view returns(uint256);
-    function getUsageLog() external view returns(uint256[] memory, uint256[] memory, uint256[] memory);
-    function checkBuyStatus(uint256 MEDITATION_PRICE) external view returns(uint256, uint256, uint256 , uint256);
-    function checkLastTechLogs() external view returns(uint256, uint256, uint256, uint256, uint256);
-    function checkUserKey(bytes32 _key) external view returns(uint256, bool, uint256);
-    function checkUserName(address, string calldata _username) external view returns(bytes32, uint256, bool, uint256);
+    function howAmI() external view returns (bool accessability, bool occupation, uint256 batteryState, uint256 totalUsers, uint256 totalDuration, uint256 myBalance);
+    function whoAmI() external view returns(address no1s1Address);
+    function howRichAmI() external view returns(uint256 no1s1Balance);
+    function getUsageLog() external view returns(uint256[] memory users, uint256[] memory balances, uint256[] memory durations);
+    function checkBuyStatus(uint256 MEDITATION_PRICE) external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate);
+    function checkLastTechLogs() external view returns(uint256 pvVoltage, uint256 systemPower, uint256 batteryChargeState, uint256 batteryCurrency, uint256 batteryVoltage);
+    function checkUserKey(bytes32 _key) external view returns(uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow);
+    function checkUserName(address, string calldata _username) external view returns(bytes32 qrCode, uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow);
 }
