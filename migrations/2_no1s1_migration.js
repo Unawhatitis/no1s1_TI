@@ -1,9 +1,9 @@
-const no1s1 = artifacts.require("no1s1data");
+const no1s1App = artifacts.require("no1s1App");
+const no1s1Data = artifacts.require("no1s1Data");
 
-// module.exports = function (deployer) {
-//   deployer.deploy(no1s1SMC);
-// };
-
-module.exports = function (deployer, network, accounts) {
-  deployer.deploy(no1s1,{from:accounts[0]});
+module.exports = async function(deployer) {
+	// deploy no1s1Data and store return value
+	await deployer.deploy(no1s1Data);
+  // deploy no1s1App and pass address of no1s1Data
+	deployer.deploy(no1s1App, no1s1Data.address);
 };
