@@ -309,7 +309,7 @@ contract no1s1Data {
         // create key to store this order
         bytes32 key = keccak256(abi.encodePacked(txSender, _username)); // username to generate key so QR code is != address
         // check whether user has already bought meditation time
-        require(no1s1Users[key].boughtDuration != 0, "You already bought meditation time for no1s1.");
+        require(no1s1Users[key].boughtDuration == 0, "You already bought meditation time for no1s1.");
         // add new no1s1 user
         no1s1Users[key] = No1s1User({
             boughtDuration: _selectedDuration,
