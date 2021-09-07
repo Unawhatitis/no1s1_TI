@@ -296,7 +296,6 @@ contract no1s1Data {
         // check if the sent amount is sufficient to cover the escrow
         require(msg.value >= ESCROW_AMOUNT, "Not enough Ether provided.");
         // check whether no1s1 battery level is sufficient for chosen meditation time
-        // TODO: do not hardcode! pass from app contract
         if(_selectedDuration >= GOOD_DURATION){
             require(no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
         }
@@ -363,11 +362,11 @@ contract no1s1Data {
     function checkActivity(bool _pressureDetected, bytes32 _key) external isCallerAuthorized requireIsOperational
     {
         // check whether access has already been registered
-        require(no1s1Users[_key].accessed == true, "Your access has already been registered.");
+        require(no1s1Users[_key].accessed == false, "The access has already been registered.");
         // check wether user entered the space.
         // TODO: more sensors? motion?
         if (_pressureDetected == true) {
-            // User is active! All good! Update user infromation to redeemed
+            // User is active! Update user infromation to accessed
             uint256 escrow = no1s1Users[_key].paidEscrow;
             no1s1Users[_key] = No1s1User({
                 boughtDuration: 0,
@@ -394,9 +393,9 @@ contract no1s1Data {
     function exit(bool _doorOpened, uint256 _actualDuration, bytes32 _key) external isCallerAuthorized requireIsOperational
     {
         // check whether user has accessed
-        require(no1s1Users[_key].accessed == false, "You have not meditated yet!");
+        require(no1s1Users[_key].accessed == true, "The user has not meditated yet!");
         // check whether user left. TODO: more sensors?
-        require(_doorOpened == true, "You have not left the space yet!");
+        require(_doorOpened == true, "The user has not left the space yet!");
         // update occupancy state
         no1s1Occupation = true;
         // update counters
