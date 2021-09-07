@@ -62,6 +62,8 @@ contract no1s1Data {
     struct No1s1User {
         uint256 boughtDuration;
         bool accessed;
+        uint256 actualDuration;
+        bool left;
         uint256 paidEscrow;
     }
 
@@ -87,15 +89,13 @@ contract no1s1Data {
     // Emitted when new purchase was made
     event newQRcode(bytes32 qrCode);
     // Emitted when access suceeded
-    event accessSuceeded(uint256 allowedTime);
-    // Emitted when access failed
-    event accessFailed(uint256 allowedTime);
-    // Emitted when user active
+    event accessSuceeded(bool success, uint256 allowedTime);
+    // Emitted when user active/inactive
     event userActive(bool userActive);
-    // Emitted when user inactive
-    event userInactive(bool userActive);
-    // Emitted when user inactive
-    event exitSuccessfull(uint256 totalMeditationTime, uint256 pricePaid, uint256 amountReturned);
+    // Emitted when user left
+    event exitSuccessful(uint256 totalMeditationTime);
+    // Emitted when escrow got refunded
+    event refundSuccessful(uint256 price, uint256 amountReturned);
 
     /********************************************************************************************/
     /*                                       CONSTRUCTOR                                        */
@@ -314,6 +314,8 @@ contract no1s1Data {
         no1s1Users[key] = No1s1User({
             boughtDuration: _selectedDuration,
             accessed: true,
+            actualDuration: 0,
+            left: false,
             paidEscrow: msg.value
         });
         // Update total escrow balance
@@ -346,11 +348,11 @@ contract no1s1Data {
             // update occupancy status so noone else can buy access
             no1s1Occupation = false;
             // emit event to unlock door for allowed duration
-            emit accessSuceeded(allowedDuration);
+            emit accessSuceeded(true, allowedDuration);
         }
         else {
             // emit event
-            emit accessFailed(0);
+            emit accessSuceeded(false, 0);
         }
     }
 
@@ -371,6 +373,8 @@ contract no1s1Data {
             no1s1Users[_key] = No1s1User({
                 boughtDuration: 0,
                 accessed: false,
+                actualDuration: 0,
+                left: false,
                 paidEscrow: escrow
             });
             // Emit event
@@ -380,31 +384,52 @@ contract no1s1Data {
             // If not active, revert occupancy state to not occupied
             no1s1Occupation = true;
             // Emit event
-            emit userInactive(false);
+            emit userActive(false);
         }
     }
 
     /**
-    * @dev function triggered by user after leaving no1s1. resets the occupancy state, pays back escrow, and sends out confirmation NFT
+    * @dev function triggered by backend after leaving no1s1. resets the occupancy state.
     */
     // TODO: careful with input format of _actualDuration
-    function exit(bool _doorOpened, address _sender, string calldata _username, uint256 _actualDuration, uint256 MEDITATION_PRICE) external isCallerAuthorized requireIsOperational
+    function exit(bool _doorOpened, uint256 _actualDuration, bytes32 _key) external isCallerAuthorized requireIsOperational
+    {
+        // check whether user has actually redeemed access (entered the space)
+        require(no1s1Users[_key].accessed == true, "You cannot redeem your escrow, because you have not meditated yet!");
+        // check whether user left. TODO: more sensors?
+        require(_doorOpened == true, "You cannot redeem your escrow because you have not left the space yet!");
+        // update occupancy state
+        no1s1Occupation = true;
+        // update counters
+        counterUsers = counterUsers.add(1);
+        counterDuration = counterDuration.add(_actualDuration);
+        // update user state
+        uint256 escrow = no1s1Users[_key].paidEscrow;
+        no1s1Users[_key] = No1s1User({
+            boughtDuration: 0,
+            accessed: false,
+            actualDuration: _actualDuration,
+            left: true,
+            paidEscrow: escrow
+        });
+        // emit event
+        emit exitSuccessful(_actualDuration);
+    }
+
+    /**
+    * @dev function triggered by user after leaving no1s1. Pays back escrow and sends out confirmation NFT.
+    */
+    function refundEscrow(address _sender, string calldata _username, uint256 MEDITATION_PRICE) external isCallerAuthorized requireIsOperational
     {
         // recalculate key
         bytes32 key = keccak256(abi.encodePacked(_sender, _username));
         // check whether user has actually redeemed access (entered the space)
         require(no1s1Users[key].accessed == true, "You cannot redeem your escrow, because you have not meditated yet!");
-        // check whether user left. TODO: more sensors?
-        require(_doorOpened == true, "You cannot redeem your escrow because you have not left the space yet!");
-        // update occupancy state
-        no1s1Occupation = true;
-        // check overtime and charge additional fee
-        // TODO: consider also shorter meditation time?
+        // check whether user left.
+        require(no1s1Users[key].left == true, "You cannot redeem your escrow, because you have not left the space yet!");
         // calculate price for the entered duration
-        uint256 price = uint256(_actualDuration).mul(uint256(MEDITATION_PRICE));
-        // update counters
-        counterUsers = counterUsers.add(1);
-        counterDuration = counterDuration.add(_actualDuration);
+        uint256 actualDuration = no1s1Users[key].actualDuration;
+        uint256 price = actualDuration.mul(uint256(MEDITATION_PRICE));
         // Update total escrow balance
         uint256 escrow = no1s1Users[key].paidEscrow;
         escrowBalance = escrowBalance.sub(escrow);
@@ -416,15 +441,19 @@ contract no1s1Data {
             no1s1Users[key] = No1s1User({
                 boughtDuration: 0,
                 accessed: false,
+                actualDuration: 0,
+                left: false,
                 paidEscrow: 0
             });
-            revert("You mediated longer than the paid escrow. You get no ETH back");
+            amountToReturn = 0;
         }
         else {
             // update user state related to escrow
             no1s1Users[key] = No1s1User({
                 boughtDuration: 0,
                 accessed: false,
+                actualDuration: 0,
+                left: false,
                 paidEscrow: 0
             });
             // send remaining escrow balance back to buyer
@@ -433,7 +462,7 @@ contract no1s1Data {
             //_safeMint(_sender, counterUsers);
         }
         // emit event
-        emit exitSuccessfull(_actualDuration, price, amountToReturn);
+        emit refundSuccessful(price, amountToReturn);
     }
 
     /********************************************************************************************/
@@ -451,7 +480,7 @@ contract no1s1Data {
     /**
     * @dev Get address of no1s1
     */
-    function whoAmI() external view returns(address)
+    function whoAmI() external view returns(address no1s1Address)
     {
         return (address(this));
     }
@@ -459,7 +488,7 @@ contract no1s1Data {
     /**
     * @dev Get balance of no1s1 (without escrow paid)
     */
-    function howRichAmI() external view returns(uint256)
+    function howRichAmI() external view returns(uint256 no1s1Balance)
     {
         return (address(this).balance.sub(escrowBalance));
     }    
@@ -501,22 +530,22 @@ contract no1s1Data {
     /**
     * @dev retrieve values needed to buy meditation time
     */
-    function checkBuyStatus(uint256 MEDITATION_PRICE) external view returns(uint256 state, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate)
+    function checkBuyStatus(uint256 MEDITATION_PRICE) external view returns(uint256 batteryState, uint256 availableMinutes, uint256 costPerMinute , uint256 lastUpdate)
     {
         // uint256 stateOfCharge = no1s1TechLogs[no1s1TechLogs.length-1].batterystateofcharge;
-        uint256 batteryState = uint256(no1s1BatteryLevel);
+        uint256 batteryLevel = uint256(no1s1BatteryLevel);
         uint256 time = no1s1TechLogs[no1s1TechLogs.length-1].time;
         uint256 duration;
         // TODO: do not hardcode durations?
-        if (batteryState == 0){
+        if (batteryLevel == 0){
             duration = 45;}
-        else if (batteryState == 1){
+        else if (batteryLevel == 1){
             duration = 30;}
-        else if(batteryState == 2){
+        else if(batteryLevel == 2){
             duration = 10;}
-        else if(batteryState == 3){
+        else if(batteryLevel == 3){
             duration = 0;}
-        return (batteryState, duration, MEDITATION_PRICE, time);
+        return (batteryLevel, duration, MEDITATION_PRICE, time);
     }
 
     /**
@@ -535,18 +564,18 @@ contract no1s1Data {
     /**
     * @dev retrieve user information with key (QR code)
     */ 
-    function checkUserKey(bytes32 _key) external view returns(uint256 meditationDuration, bool accessed, uint256 escrow)
+    function checkUserKey(bytes32 _key) external view returns(uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow)
     {
-        return (no1s1Users[_key].boughtDuration, no1s1Users[_key].accessed, no1s1Users[_key].paidEscrow);
+        return (no1s1Users[_key].boughtDuration, no1s1Users[_key].accessed, no1s1Users[_key].actualDuration, no1s1Users[_key].left, no1s1Users[_key].paidEscrow);
     }
 
     /**
     * @dev retrieve user information with username
     */ 
-    function checkUserName(address _sender, string calldata _username) external view returns(bytes32 qrCode, uint256 meditationDuration, bool accesseds, uint256 escrow)
+    function checkUserName(address _sender, string calldata _username) external view returns(bytes32 qrCode, uint256 meditationDuration, bool accessed, uint256 actualDuration, bool left, uint256 escrow)
     {
         bytes32 key = keccak256(abi.encodePacked(_sender, _username));
-        return (key, no1s1Users[key].boughtDuration, no1s1Users[key].accessed, no1s1Users[key].paidEscrow);
+        return (key, no1s1Users[key].boughtDuration, no1s1Users[key].accessed, no1s1Users[key].actualDuration, no1s1Users[key].left, no1s1Users[key].paidEscrow);
     }
 
 
