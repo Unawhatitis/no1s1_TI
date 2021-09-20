@@ -45,24 +45,116 @@
                                     </div>
                                 </div>
 
-                                <h3 class="title">Confirm Entry</h3>
+                                <h3 class="title">Deposit</h3>
                                 <div class="header header-primary text-center">
                                     <div class="logo-container">
                                     </div>
                                 </div>
                                 <div class="content">
-                                <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="Transfer Address" [value]='user.transferAddress' (input)="user.transferAddress=logdata($event)">
+                                    <form [formGroup]="buyform" (ngSubmit)="submitForm()"> 
+                                        <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="User Name" [value]='user.transferAddress' (input)="user.transferAddress=logdata($event)">
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- <label for="website">Website:</label>  -->
+                                            <select class="form-control" [formControl]="buyDropdown">
+                                                <option disabled>Select Duration</option>
+                                                <option [value]="duration" *ngFor="let duration of Duration">{{duration}}</option>
+                                            </select>
+                                                <!-- Submit Button -->
+                                            <div class="footer text-center">
+                                                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Transfer</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus1===true}" >
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span>
-                                    </div>
-                                    <input class="form-control" placeholder="Transfer Amount" [value]='user.amount' (input)="user.amount=logdata($event)">
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card card-login card-plain">
+                            <div class="header header-primary text-center">
+                                <div class="logo-container">
                                 </div>
+                            </div>
+                            <!-- <form [formGroup]="userForm" (ngSubmit)="submitForm()" novalidate autocomplete="off"> -->
+                            <form class="form-group" (ngSubmit)="submitForm()" novalidate autocomplete="off" method="" action="">
+                                <div class="header header-primary text-center">
+                                    <div class="logo-container">
+                                    </div>
+                                </div>
+
+                                <h3 class="title">Entry</h3>
+                                <div class="header header-primary text-center">
+                                    <div class="logo-container">
+                                    </div>
+                                </div>
+                                QR Code 
+                                (make a place holder with frame, generated when deposite)
+                                (how to meke a downloadable qr code to save on phone)
+                                <!-- <div class="content">
+                                    <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Transfer Address" [value]='user.transferAddress' (input)="user.transferAddress=logdata($event)">
+                                    </div>
+                                    <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus1===true}" >
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span>
+                                        </div>
+                                        <input class="form-control" placeholder="Transfer Amount" [value]='user.amount' (input)="user.amount=logdata($event)">
+                                    </div>
+                                </div> -->
+                                <div class="footer text-center">
+                                    <button click="submitForm()" class="btn btn-primary btn-round btn-lg btn-block">Enter with QR code</button>
+                                </div>
+                                <!-- type="submit" -->
+                                <!-- <div class="pull-left">
+                                    <h6>
+                                        <a href="#pablo" class="link">Create Account</a>
+                                    </h6>
+                                </div>
+                                <div class="pull-right">
+                                    <h6>
+                                        <a href="#pablo" class="link">Need Help?</a>
+                                    </h6>
+                                </div> -->
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card card-login card-plain">
+                            <div class="header header-primary text-center">
+                                <div class="logo-container">
+                                </div>
+                            </div>
+                            <!-- <form [formGroup]="userForm" (ngSubmit)="submitForm()" novalidate autocomplete="off"> -->
+                            <form class="form-group" (ngSubmit)="submitForm()" novalidate autocomplete="off" method="" action="">
+                                <div class="header header-primary text-center">
+                                    <div class="logo-container">
+                                    </div>
+                                </div>
+
+                                <h3 class="title">Redeem</h3>
+                                <div class="header header-primary text-center">
+                                    <div class="logo-container">
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="User name" [value]='user.transferAddress' (input)="user.transferAddress=logdata($event)">
+                                    </div>
                                 </div>
 
 
@@ -83,8 +175,7 @@
                             </form>
                         </div>
                     </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
+
                 </div>
             </div>
         </div>
