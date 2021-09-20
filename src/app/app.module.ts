@@ -21,6 +21,7 @@ import { NavbarModule} from './shared/navbar2/navbar.module';
 import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
 //import {ComponentsRoutingModule} from'./components/components.rounting';
 //import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 import { NouisliderModule } from 'ng2-nouislider';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
@@ -72,6 +73,8 @@ import { TestComponent } from './test/test.component';
         NavbarModule,
         FixedPluginModule,
         ToastrModule.forRoot(),
+        NgxQRCodeModule,
+
         //FormBuilder,FormControl,FormGroup,Validators
     ],
     providers: [],

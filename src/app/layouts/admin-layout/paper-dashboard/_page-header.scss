@@ -1,6 +1,6 @@
 .page-header{
     min-height: 100vh;
-    max-height: 1000px;
+    max-height: 2000px;
     padding: 0;
     color: $white-color;
     position: relative;
@@ -10,7 +10,7 @@
         background-size: cover;
         background-position: center center;
         width: 100%;
-        height: 100%;
+        height: 200% !important;
         z-index: -1;
     }
 

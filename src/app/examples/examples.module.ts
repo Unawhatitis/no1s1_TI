@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ExamplesComponent } from './examples.component';
 import { ProfileRMComponent } from './profile_RM/profile_RM.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 @NgModule({
     imports: [
@@ -22,7 +23,9 @@ import { ProfileRMComponent } from './profile_RM/profile_RM.component';
         ReactiveFormsModule,
         AgmCoreModule.forRoot({
             apiKey: 'YOUR_KEY_HERE'
-        })
+        }),
+        NgxQRCodeModule,
+
     ],
     declarations: [
         LandingComponent,

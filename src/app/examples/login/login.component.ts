@@ -4,6 +4,7 @@ import {TransferService} from '../../service/metamask.service';
 import {SMCService} from '../../service/smc.service';
 import {default as Web3} from 'web3';
 import { Subscription } from 'rxjs';
+import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 
 @Component({
   selector: 'app-login',
@@ -45,10 +46,16 @@ export class LoginComponent implements OnInit {
     //   //   { type: 'required', message: 'Remarks are required' }
     //   // ]
     // };
+    //***qr code */
+    elementType = NgxQrcodeElementTypes.URL;
+    correctionLevel =  NgxQrcodeErrorCorrectionLevels.HIGH;
+    qrvalue = "https://no1s1.space";
+
 
     constructor(private _smcService:SMCService, private transferService: TransferService, private fb:FormBuilder) { } //, private fb: FormBuilder
 
     ngOnInit() {
+
         var body = document.getElementsByTagName('body')[0];
         body.classList.add('login-page');
 
@@ -56,10 +63,10 @@ export class LoginComponent implements OnInit {
         navbar.classList.add('navbar-transparent');
 
         this.formSubmitted = false;
-        this.user = {address: '', transferAddress: '', balance: '', amount: ''};//, remarks: ''
+        this.user = {address: '', transferAddress: '', balance: '', amount: '', userName:''};//, remarks: ''
         this.getAccountAndBalance();
         // this.createForms();
-        this.buyDropdown=this.fb.array(this.Duration);
+        this.buyDropdown;
 
         let that =this;
         this._smcService.returnLastLog().then(function(data){
@@ -115,10 +122,16 @@ export class LoginComponent implements OnInit {
           console.log(error);
         });
       }
+    
+    getno1s1Account = () =>{
+      const that = this;
+      //this.transferService
+      //to do call what is my account and then make user.transferAddress = that account.
+    }
 
     submitForm() {
-      this.selDuration = this.buyDropdown.get('');
-      console.log(this.buyDropdown.valueChanges.subscribe());
+      //this.selDuration = this.buyDropdown.get('');
+      //console.log(this.buyDropdown);
       this.durationSelected=true;
       //todo: add more transaction for escorn and stuff */
 
