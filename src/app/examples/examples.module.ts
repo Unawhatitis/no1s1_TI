@@ -12,6 +12,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { ExamplesComponent } from './examples.component';
 import { ProfileRMComponent } from './profile_RM/profile_RM.component';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { BrowserModule } from '@angular/platform-browser';
+
 
 @NgModule({
     imports: [
@@ -25,6 +27,7 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
             apiKey: 'YOUR_KEY_HERE'
         }),
         NgxQRCodeModule,
+        BrowserModule,
 
     ],
     declarations: [
