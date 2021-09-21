@@ -6,6 +6,7 @@ import {default as Web3} from 'web3';
 import { Subscription } from 'rxjs';
 import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,6 +14,11 @@ import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiedi
   providers:[TransferService]
 })
 export class LoginComponent implements OnInit {
+    //***qr code */
+    public elementType = NgxQrcodeElementTypes.URL;
+    public correctionLevel =  NgxQrcodeErrorCorrectionLevels.HIGH;
+    public qrvalue = "https://no1s1.space";
+    //********** */
     private web3:Web3;
     data : Date = new Date();
     focus;
@@ -46,10 +52,7 @@ export class LoginComponent implements OnInit {
     //   //   { type: 'required', message: 'Remarks are required' }
     //   // ]
     // };
-    //***qr code */
-    elementType = NgxQrcodeElementTypes.URL;
-    correctionLevel =  NgxQrcodeErrorCorrectionLevels.HIGH;
-    qrvalue = "https://no1s1.space";
+
 
 
     constructor(private _smcService:SMCService, private transferService: TransferService, private fb:FormBuilder) { } //, private fb: FormBuilder

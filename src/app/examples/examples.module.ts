@@ -5,7 +5,7 @@ import { NouisliderModule } from 'ng2-nouislider';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { AgmCoreModule } from '@agm/core';
-
+import { QrCodeModule } from 'ng-qrcode';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -28,6 +28,7 @@ import { BrowserModule } from '@angular/platform-browser';
         }),
         NgxQRCodeModule,
         BrowserModule,
+        QrCodeModule
 
     ],
     declarations: [

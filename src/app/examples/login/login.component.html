@@ -93,12 +93,15 @@
                                 <div class="row" style="background-color:rgb(255, 255, 255);">
                                     <div class="container content-center">
                                         <h5 style="color: rgb(223, 81, 29);"><strong>Your QR Code</strong></h5>
-                                        <ngx-qrcode
-                                        [elementType]="elementType"
-                                        [errorCorrectionLevel]="correctionLevel"
-                                        [value]="qrvalue"
-                                        cssClass="bshadow"></ngx-qrcode>
-                                        <!-- <textarea [(ngModel)] = "value"></textarea>  -->
+                                        <qr-code value="Yo world!" size="300" errorCorrectionLevel="M"></qr-code>
+                                        <!-- <div class="qrcontainer">
+                                            <ngx-qrcode
+                                            [elementType]="elementType"
+                                            [errorCorrectionLevel]="correctionLevel"
+                                            [value]="qrvalue"
+                                            cssClass="coolQRcode"></ngx-qrcode>
+                                         <textarea [(ngModel)] = "value"></textarea>  
+                                        </div> -->
                                     </div>
                                 </div>
 
