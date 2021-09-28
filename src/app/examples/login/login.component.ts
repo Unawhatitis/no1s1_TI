@@ -43,8 +43,10 @@ export class LoginComponent implements OnInit {
     durationSelected = false;
     
     valueSubscription: Subscription;
-    selDuration : any;
+    selDuration = this.durations[2];
     userName:any;
+    pass_username :any;
+    defaultqr = true;
     //***********duration form************//
     // accountValidationMessages = {
     //   transferAddress: [
@@ -63,7 +65,10 @@ export class LoginComponent implements OnInit {
 
 
 
-    constructor(private _smcService:SMCService, private transferService: TransferService, private fb:FormBuilder) { } //, private fb: FormBuilder
+    constructor(
+      private _smcService:SMCService, 
+      private transferService: TransferService, 
+      private fb:FormBuilder) { } //, private fb: FormBuilder
 
     ngOnInit() {
 
@@ -77,7 +82,8 @@ export class LoginComponent implements OnInit {
         this.useraccount = {address: '', transferAddress: '', balance: '', amount: '', userName:''};//, remarks: ''
         this.getAccountAndBalance();
         this.userModel = new User('',null,'')
-        this.createForms();
+        this.pass_username = '';
+        //this.createForms();
         //this.buyDropdown;
 
         let that =this;
@@ -88,81 +94,56 @@ export class LoginComponent implements OnInit {
       })
     }
 
-    //***********duration form************//
-
-
-
-
+    //GET USER ACCOUNT FROM METAMASK
+    getAccountAndBalance = () => {
+      const that = this;
+      this.transferService.getUserBalance().
+      then(function(retAccount: any) {
+        that.useraccount.address = retAccount.account;
+        that.useraccount.balance = retAccount.balance;
+        console.log('transfer.components :: getAccountAndBalance :: that.account');
+        console.log(that.useraccount);
+      }).catch(function(error) {
+        console.log(error);
+      });
+    }
+    //////////////////////////////END
+    
+    //STEP 1 : DEPOSIT : DATA LOG && SUBMIT BUTTON
     logdata(event:Event):string{
       return (event.target as HTMLInputElement).value;
     }
 
-    ngOnDestroy(){
-        var body = document.getElementsByTagName('body')[0];
-        body.classList.remove('login-page');
-
-        var navbar = document.getElementsByTagName('nav')[0];
-        navbar.classList.remove('navbar-transparent');
+    logSdata(event:Event):string{
+      return (event.target as HTMLSelectElement).value;
     }
-
-    createForms() {
-      this.userForm = this.fb.group({
-        username: new FormControl(this.userModel.username, Validators.compose([
-          Validators.required,
-          //Validators.minLength(42),
-          //Validators.maxLength(42)
-        ])),
-        duration: new FormControl(this.userModel.duration, Validators.compose([
-          Validators.required,
-          //Validators.pattern('^[+]?([.]\\d+|\\d+[.]?\\d*)$')
-        ])),
-        // remarks: new FormControl(this.user.remarks, Validators.compose([
-        //   Validators.required
-        // ]))
-      });
-    }
-
-    getAccountAndBalance = () => {
-        const that = this;
-        this.transferService.getUserBalance().
-        then(function(retAccount: any) {
-          that.useraccount.address = retAccount.account;
-          that.useraccount.balance = retAccount.balance;
-          console.log('transfer.components :: getAccountAndBalance :: that.account');
-          console.log(that.useraccount);
-        }).catch(function(error) {
-          console.log(error);
-        });
-      }
     
-    getno1s1Account = () =>{
-      const that = this;
-      //this.transferService
-      //to do call what is my account and then make user.transferAddress = that account.
-    }
-
-    newUser() {
-      
-      this.durationSelected=true;
-      //this.Duration = ; 
-      
-      // let that =this;
-      //   this._smcService.buyAccess(_duration,useraddress,_username).then(function(data){
-      //   that.Bstateofcharge=data[2];
-      //   that.Aduration=data[3];
-      //   that.Cost=data[4];
-      // })
-    }
+    //STEP 1 : transfer button submission
     onSubmit(){
       this.formSubmitted=true;
+      console.log("this is values in onsubmit function:");
       console.log(this.userModel.username);
       console.log(this.userModel.duration);
+      this.buyUsage(this.userModel.username,this.userModel.duration)
     }
-    return(){
-      console.log(this.userModel.username);
-      console.log(this.userModel.duration);
+
+    buyUsage(start_username,start_duration){
+      const that = this;
+      if(!start_username || !start_duration){
+        console.log("username and duration is required!")
+      } else if (!that.useraccount.address){
+        console.log("account is required!")
+      }else{ 
+        this.durationSelected=true;
+        this._smcService.buyAccess(start_duration,that.useraccount.address,start_username).then(function(data){
+          that.qrvalue = data[0];
+          that.defaultqr = false;
+        })
+      }
     }
-    
+    //////////////////////////////END
+
+    //STEP 2 : download QR code
     downloadQR(){
       console.log(this.qrcode);
       const parent = this.qrcode;
@@ -194,6 +175,56 @@ export class LoginComponent implements OnInit {
       // RETURN BLOB IMAGE AFTER CONVERSION
       return new Blob([uInt8Array], { type: imageType });
     }
+    //////////////////////////////END
+
+    //STEP 3 : Redeem the deposit
+    returnDep(redeem_user){
+      console.log("this is values in returnDep function:");
+      console.log(redeem_user);
+      const that = this; 
+      if(!redeem_user){
+        console.log("username is required!")
+      } else if (!that.useraccount.address){
+        console.log("account is required!")
+      }else{ 
+      this._smcService.redeemDeposit(that.useraccount.address,redeem_user);
+      }
+    }
+    //////////////////////////////END
+
+    //STEP LAST : onDestroy
+    ngOnDestroy(){
+      var body = document.getElementsByTagName('body')[0];
+      body.classList.remove('login-page');
+
+      var navbar = document.getElementsByTagName('nav')[0];
+      navbar.classList.remove('navbar-transparent');
+  }
+    //////////////////////////////END
+
+
+    getno1s1Account = () =>{
+      const that = this;
+      //this.transferService
+      //to do call what is my account and then make user.transferAddress = that account.
+    }
+
+    // createForms() {
+    //   this.userForm = this.fb.group({
+    //     username: new FormControl(this.userModel.username, Validators.compose([
+    //       Validators.required,
+    //       //Validators.minLength(42),
+    //       //Validators.maxLength(42)
+    //     ])),
+    //     duration: new FormControl(this.userModel.duration, Validators.compose([
+    //       Validators.required,
+    //       //Validators.pattern('^[+]?([.]\\d+|\\d+[.]?\\d*)$')
+    //     ])),
+    //     // remarks: new FormControl(this.user.remarks, Validators.compose([
+    //     //   Validators.required
+    //     // ]))
+    //   });
+    // }
 
     //old submition form for transfer certain amount of ethereum to accounts//
     // submitForm() {
