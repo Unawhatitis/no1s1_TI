@@ -8,6 +8,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      //imports:[FormsModule],
       declarations: [ LoginComponent ]
     })
     .compileComponents();

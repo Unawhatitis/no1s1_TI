@@ -4,6 +4,8 @@ import {TransferService} from '../../service/metamask.service';
 import {SMCService} from '../../service/smc.service';
 import {default as Web3} from 'web3';
 import { Subscription } from 'rxjs';
+import { UserComponent } from 'app/pages/user/user.component';
+import {User} from './user';
 //import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 
 
@@ -17,27 +19,32 @@ export class LoginComponent implements OnInit {
     //***qr code */
     link: string
     @ViewChild("qrcode", {static : true}) qrcode: LoginComponent
-
     qrvalue = "https://no1s1.space";
+
     //********** */
     private web3:Web3;
     data : Date = new Date();
     focus;
     focus1;
-    //form 
-    formSubmitted = false;
-    userForm: FormGroup;
-    user: any;
+    //** Data for **//
     Bstateofcharge:any;
     Aduration:any;
     Cost:any;
-    //***********duration form************//
-    //select duration 
+    useraccount:any;
+    //*****User Form*****//
+    formSubmitted = false;
+    userForm: FormGroup;
+
+    durations = [5,10,20,40]
+    userModel = new User('no one', this.durations[0],'');
+    nameGiven = false;
+
     buyDropdown = new FormControl();
     durationSelected = false;
-    Duration = [5,10,20,40]
+    
     valueSubscription: Subscription;
     selDuration : any;
+    userName:any;
     //***********duration form************//
     // accountValidationMessages = {
     //   transferAddress: [
@@ -67,10 +74,11 @@ export class LoginComponent implements OnInit {
         navbar.classList.add('navbar-transparent');
 
         this.formSubmitted = false;
-        this.user = {address: '', transferAddress: '', balance: '', amount: '', userName:''};//, remarks: ''
+        this.useraccount = {address: '', transferAddress: '', balance: '', amount: '', userName:''};//, remarks: ''
         this.getAccountAndBalance();
-        // this.createForms();
-        this.buyDropdown;
+        this.userModel = new User('',null,'')
+        this.createForms();
+        //this.buyDropdown;
 
         let that =this;
         this._smcService.returnLastLog().then(function(data){
@@ -97,31 +105,31 @@ export class LoginComponent implements OnInit {
         navbar.classList.remove('navbar-transparent');
     }
 
-    // createForms() {
-    //   this.userForm = this.fb.group({
-    //     transferAddress: new FormControl(this.user.transferAddress, Validators.compose([
-    //       Validators.required,
-    //       Validators.minLength(42),
-    //       Validators.maxLength(42)
-    //     ])),
-    //     amount: new FormControl(this.user.amount, Validators.compose([
-    //       Validators.required,
-    //       Validators.pattern('^[+]?([.]\\d+|\\d+[.]?\\d*)$')
-    //     ])),
-    //     // remarks: new FormControl(this.user.remarks, Validators.compose([
-    //     //   Validators.required
-    //     // ]))
-    //   });
-    // }
+    createForms() {
+      this.userForm = this.fb.group({
+        username: new FormControl(this.userModel.username, Validators.compose([
+          Validators.required,
+          //Validators.minLength(42),
+          //Validators.maxLength(42)
+        ])),
+        duration: new FormControl(this.userModel.duration, Validators.compose([
+          Validators.required,
+          //Validators.pattern('^[+]?([.]\\d+|\\d+[.]?\\d*)$')
+        ])),
+        // remarks: new FormControl(this.user.remarks, Validators.compose([
+        //   Validators.required
+        // ]))
+      });
+    }
 
     getAccountAndBalance = () => {
         const that = this;
         this.transferService.getUserBalance().
         then(function(retAccount: any) {
-          that.user.address = retAccount.account;
-          that.user.balance = retAccount.balance;
-          console.log('transfer.components :: getAccountAndBalance :: that.user');
-          console.log(that.user);
+          that.useraccount.address = retAccount.account;
+          that.useraccount.balance = retAccount.balance;
+          console.log('transfer.components :: getAccountAndBalance :: that.account');
+          console.log(that.useraccount);
         }).catch(function(error) {
           console.log(error);
         });
@@ -133,18 +141,32 @@ export class LoginComponent implements OnInit {
       //to do call what is my account and then make user.transferAddress = that account.
     }
 
-    submitForm() {
-      //this.selDuration = this.buyDropdown.get('');
-      //console.log(this.buyDropdown);
+    newUser() {
+      
       this.durationSelected=true;
-      //todo: add more transaction for escorn and stuff */
-
+      //this.Duration = ; 
+      
+      // let that =this;
+      //   this._smcService.buyAccess(_duration,useraddress,_username).then(function(data){
+      //   that.Bstateofcharge=data[2];
+      //   that.Aduration=data[3];
+      //   that.Cost=data[4];
+      // })
+    }
+    onSubmit(){
+      this.formSubmitted=true;
+      console.log(this.userModel.username);
+      console.log(this.userModel.duration);
+    }
+    return(){
+      console.log(this.userModel.username);
+      console.log(this.userModel.duration);
     }
     
     downloadQR(){
       console.log(this.qrcode);
       const parent = this.qrcode;
-      //!
+      //@ts-ignore
       const parentElement = parent.qrcElement.nativeElement.querySelector("img").src;
       let blobData = this.convertBase64ToBlob(parentElement);
       const blob = new Blob([blobData], { type: "image/png" });

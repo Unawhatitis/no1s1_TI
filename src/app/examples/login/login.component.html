@@ -22,8 +22,8 @@
                                         <ngb-progressbar [value]="Bstateofcharge"><span class="progress-value">{{Bstateofcharge}}%</span></ngb-progressbar><br>
                                         <!-- <p><strong>Maximum Stay</strong> <br>{{Aduration}}Min</p>
                                         <p><strong>Cost</strong> <br>{{Cost}} WEI</p> -->
-                                        <p><strong>Address</strong><br>{{user.address}} </p>
-                                        <p><strong>Balance</strong><br>{{user.balance}} WEI</p>
+                                        <p><strong>Address</strong><br>{{useraccount.address}} </p>
+                                        <p><strong>Balance</strong><br>{{useraccount.balance}} WEI</p>
                                     </div>
                                 </div>
                             </div>
@@ -34,40 +34,58 @@
                             <div class="header header-primary text-center">
                                 <div class="logo-container"></div>
                             </div>
-                            <!-- <form [formGroup]="userForm" (ngSubmit)="submitForm()" novalidate autocomplete="off"> -->
-                            <form class="form-group" [formGroup]="buyform" (ngSubmit)="submitForm()" novalidate autocomplete="off" method="" action="">
-                                <div class="header header-primary text-center">
-                                    <div class="logo-container">
-                                    </div>
+                            <!-- keep empty space for logo-->
+                            <div class="header header-primary text-center">
+                                <div class="logo-container">
                                 </div>
-
-                                <h3 class="title">Deposit</h3>
-                                <div class="header header-primary text-center">
-                                    <div class="logo-container">
-                                    </div>
+                            </div>
+                            <h3 class="title">Deposit</h3>
+                            <!-- keep empty space for logo-->
+                            <div class="header header-primary text-center">
+                                <div class="logo-container">
                                 </div>
-                                <div class="content">
-                                    <!-- <form [formGroup]="buyform" (ngSubmit)="submitForm()">  -->
+                            </div>
+                                
+                            <div class="content">
+                                <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+                                    <div class="form-group">
                                         <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="User Name" [value]='user.userName' (input)="user.userName=logdata($event)">
+                                            <input type="text" class="form-control" id="username" 
+                                                    required
+                                                    placeholder="User Name" [(ngModel)]='userModel.username' 
+                                                    name="username" #name="ngModel">
+                                                    <!-- <div class="row">
+                                                        <div [hidden]="username.valid || username.pristine">
+                                                            Name is required
+                                                        </div>
+                                                    </div> -->
+                                                    <!-- <input type="text" class="form-control" id="username" 
+                                                    required
+                                                    placeholder="User Name" [value]='user.userName' 
+                                                    (input)="user.userName=logdata($event)"> -->
                                         </div>
-                                        <div class="form-group">
-                                            <!-- <label for="website">Website:</label>  -->
-                                            <select class="form-control" [formControl]="buyDropdown">
-                                                <option disabled>Select Duration</option>
-                                                <option style="color:black" [value]="duration" *ngFor="let duration of Duration">{{duration}}</option>
-                                            </select>
-                                                <!-- Submit Button -->
-                                            <div class="footer text-center">
-                                                <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Transfer</button>
-                                            </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- <label for="website">Website:</label>  -->
+                                        <!-- <select class="form-control" [formControl]="buyDropdown" [(ngModel)]="userModel.duration"> -->
+                                        <select class="form-control" id="duration" 
+                                            [(ngModel)]="userModel.duration"
+                                            name="duration" #duration="ngModel"
+                                            required>
+                                            <option disabled>Select Duration</option>
+                                            <option style="color:black" [ngValue]="userModel.duration" [value]="duration" *ngFor="let duration of durations">{{duration}}</option>
+                                        </select>
+                                            <!-- Submit Button -->
+                                        <div class="footer text-center">
+                                            <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Transfer</button>
                                         </div>
-                                    <!-- </form> -->
-                                </div>
-                            </form>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,13 +155,13 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="User name" [value]='user.transferAddress' (input)="user.transferAddress=logdata($event)">
+                                        <input type="text" class="form-control" placeholder="User name" >
                                     </div>
                                 </div>
 
 
                                 <div class="footer text-center">
-                                    <button click="submitForm()" class="btn btn-primary btn-round btn-lg btn-block">Redeem Deposit</button>
+                                    <button click="" class="btn btn-primary btn-round btn-lg btn-block">Redeem Deposit</button>
                                 </div>
                                 <!-- type="submit" -->
                                 <!-- <div class="pull-left">
