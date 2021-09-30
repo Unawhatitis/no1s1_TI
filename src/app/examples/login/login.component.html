@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                             <!-- <form [formGroup]="userForm" (ngSubmit)="submitForm()" novalidate autocomplete="off"> -->
-                            <form class="form-group" (ngSubmit)="submitForm()" novalidate autocomplete="off" method="" action="">
+                            <form class="form-group" (ngSubmit)="downloadQR()" novalidate autocomplete="off" method="" action="">
                                 <div class="header header-primary text-center">
                                     <div class="logo-container">
                                     </div>
@@ -126,12 +126,12 @@
                                 <div class="row" style="background-color:rgba(0, 0, 0, 0.13);">
                                     <div class="container content-center">
                                         <h5 style="color: rgb(223, 81, 29);"><strong>Your QR Code</strong></h5>
-                                        <qrcode #qrcode [qrdata]="qrvalue" [width]="256" [errorCorrectionLevel]="'M'" elementType="img"></qrcode>
+                                        <qrcode #qrcode *ngIf="display" [qrdata]="value" [width]="256" [errorCorrectionLevel]="'M'" elementType="img"></qrcode>
                                     </div>
                                 </div>
 
                                 <div class="footer text-center">
-                                    <button (click)="downloadQR()" 
+                                    <button type="submit"
                                     class="btn btn-primary btn-round btn-lg btn-block"
                                     [disabled]="defaultqr?true:null">Download QR code</button>                               </div>
                                 <!-- type="submit" -->
@@ -185,7 +185,7 @@
 
                                 <div class="footer text-center">
                                     <button type="submit"
-                                    [disabled] = "!pass_username  "
+                                    [disabled] = "!pass_username"
                                     class="btn btn-primary btn-round btn-lg btn-block">Redeem Deposit</button>
                                 </div>
                                 <!-- type="submit" -->
