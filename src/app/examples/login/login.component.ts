@@ -18,8 +18,10 @@ import {User} from './user';
 export class LoginComponent implements OnInit {
     //***qr code */
     link: string
-    @ViewChild("qrcode", {static : true}) qrcode: LoginComponent
-    qrvalue = "https://no1s1.space";
+    @ViewChild("qrcode", {static : false}) qrcode: LoginComponent
+    qrvalue : any ;
+    value: string;
+    display = false;
 
     //********** */
     private web3:Web3;
@@ -47,6 +49,7 @@ export class LoginComponent implements OnInit {
     userName:any;
     pass_username :any;
     defaultqr = true;
+    
     //***********duration form************//
     // accountValidationMessages = {
     //   transferAddress: [
@@ -135,15 +138,39 @@ export class LoginComponent implements OnInit {
         console.log("account is required!")
       }else{ 
         this.durationSelected=true;
-        this._smcService.buyAccess(start_duration,that.useraccount.address,start_username).then(function(data){
-          that.qrvalue = data[0];
+        console.log("smart contract buy access starts");
+        this._smcService.buyAccess(start_duration,start_username,that.useraccount.address).then(function(data){
+          console.log("returned data ; compomnent level ; buy access");
+          console.log(data);
+          that._smcService.getUserInfo(start_username).then(function(data){
+            console.log("returned data ; compomnent level ; get info");
+            console.log(data.qrCode);
+            that.qrvalue = data.qrCode;
+            that.generateQRCode();
+            //console.log(data[0]);
+          });
+          //that.qrvalue = data[0];
           that.defaultqr = false;
         })
       }
     }
+
+    generateQRCode(){
+      if(this.qrvalue == ''){
+        this.display = false;
+        alert("Please enter the qrvalue");
+        return;
+      }
+      else{
+        this.value = this.qrvalue;
+        this.display = true;
+      }
+    }
+
     //////////////////////////////END
 
     //STEP 2 : download QR code
+
     downloadQR(){
       console.log(this.qrcode);
       const parent = this.qrcode;
