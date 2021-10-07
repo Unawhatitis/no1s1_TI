@@ -300,10 +300,10 @@ contract no1s1Data {
             require(no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
         }
         else if (_selectedDuration >= LOW_DURATION){
-            require(no1s1BatteryLevel == BatteryState.Good, "no1s1 battery level not sufficient for selected duration.");
+            require(no1s1BatteryLevel == BatteryState.Good || no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
         }
         else if (_selectedDuration > 0){
-            require(no1s1BatteryLevel == BatteryState.Low, "no1s1 battery level not sufficient for selected duration.");
+            require(no1s1BatteryLevel == BatteryState.Low || no1s1BatteryLevel == BatteryState.Good || no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
         }
         // create key to store this order
         bytes32 key = keccak256(abi.encodePacked(txSender, _username)); // username to generate key so QR code is != address
@@ -339,10 +339,10 @@ contract no1s1Data {
             require(no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
             }
             else if (allowedDuration >= LOW_DURATION){
-                require(no1s1BatteryLevel == BatteryState.Good, "no1s1 battery level not sufficient for selected duration.");
+                require(no1s1BatteryLevel == BatteryState.Good || no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
             }
             else if (allowedDuration > 0){
-                require(no1s1BatteryLevel == BatteryState.Low, "no1s1 battery level not sufficient for selected duration.");
+                require(no1s1BatteryLevel == BatteryState.Low || no1s1BatteryLevel == BatteryState.Good || no1s1BatteryLevel == BatteryState.Full, "no1s1 battery level not sufficient for selected duration.");
             }
             // update occupancy status so noone else can buy access
             no1s1Occupation = false;
