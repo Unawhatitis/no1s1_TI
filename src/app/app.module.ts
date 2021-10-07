@@ -21,6 +21,7 @@ import { NavbarModule} from './shared/navbar2/navbar.module';
 import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
 //import {ComponentsRoutingModule} from'./components/components.rounting';
 //import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { NouisliderModule } from 'ng2-nouislider';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
@@ -49,9 +50,7 @@ import { TestComponent } from './test/test.component';
         NgbdModalBasic,
         TestComponent,
         AdminLayoutComponent,
-        //ComponentsRoutingModule
-        //NavbarComponent2,
-        //ComponentsComponent,
+
     ],
     imports: [
         BrowserAnimationsModule,
@@ -72,7 +71,9 @@ import { TestComponent } from './test/test.component';
         NavbarModule,
         FixedPluginModule,
         ToastrModule.forRoot(),
-        //FormBuilder,FormControl,FormGroup,Validators
+        QRCodeModule,
+
+
     ],
     providers: [],
     bootstrap: [AppComponent]

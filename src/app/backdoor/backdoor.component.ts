@@ -5,21 +5,6 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import * as Rellax from 'rellax';
 
-// import { NgModule } from '@angular/core';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-// import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-// import { NouisliderModule } from 'ng2-nouislider';
-// import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
-// import { RouterModule } from '@angular/router';
-
-// import { BasicelementsComponent } from '../components/basicelements/basicelements.component';
-// //'../basicelements/basicelements.component';
-// import { NavigationComponent } from '../components/navigation/navigation.component';
-// import { TypographyComponent } from '../components/typography/typography.component';
-// import { NucleoiconsComponent } from '../components/nucleoicons/nucleoicons.component';
-// import { ComponentsComponent } from '../components/components.component';
-// import { NotificationComponent } from '../components/notification/notification.component';
-// import { NgbdModalBasic } from '../components/modal/modal.component';
 
 @Component({
   selector: 'app-backdoor',
@@ -54,11 +39,11 @@ export class BackdoorComponent implements OnInit {
   PVvoltage:any;
   systemenergy:any;
   Bstateofcharge:any;
-  userRegistered = false;
+  //userRegistered = false;
 
   ///////////
 
-  regs = {username:"",ccode:"",time:"",uuid:""}
+  buys = {username:"",duration:""}
   usernumber:any;
 
   constructor(private _smcService:SMCService, private renderer : Renderer2, config: NgbAccordionConfig) {config.closeOthers = true;
@@ -107,15 +92,15 @@ export class BackdoorComponent implements OnInit {
     //console.log(this.usernumber);
   }
 
-  onReg(){
-    let that = this;
-    console.log(this.regs.username);
-    this._smcService.registerNewUser(this.regs.username,Number(this.regs.ccode),Number(this.regs.time),Number(this.regs.uuid)).then(function(data){
-      that.userRegistered = true;
-      console.log(this.regs.username);
-    })
-    console.log(this.regs.username);
-  }
+  // onBuy(){
+  //   let that = this;
+  //   console.log(this.buys.username);
+  //   this._smcService.buyAccess(this.buys.duration,this.buys.username).then(function(data){
+  //     //that.userbought = true;
+  //     console.log(this.buys.username);
+  //   })
+  //   console.log(this.buys.username);
+  // }
   
   lastLog(){
     let that =this;
