@@ -113,8 +113,17 @@ export class BackdoorComponent implements OnInit {
 
   onLogAccData(){
     let that = this;
-    this._smcService.AccountInfoLog().then(function(data){
+    //this._smcService.AccountInfoLog().then(function(data){
+    //})
+  }
+
+  whoAmI(){
+    let that=this;
+    this._smcService.whoAmI().then(function(data){
+      console.log("who am i ")
+      console.log(data)
     })
+
   }
 
 

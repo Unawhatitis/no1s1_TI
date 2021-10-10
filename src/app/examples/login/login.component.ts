@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     formSubmitted = false;
     userForm: FormGroup;
 
-    durations = [5,10,20,40]
+    durations = [1,5,10,20,40]
     userModel = new User('no one', this.durations[0],'');
     nameGiven = false;
 

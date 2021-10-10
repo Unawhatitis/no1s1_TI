@@ -23,6 +23,7 @@ export class AdminLayoutComponent implements OnInit {
   accmUsers: any;
   public balanceArray : any[];
   public userArray : any[];
+  public durationArray: any[];
   UserArray : any[];
 
   constructor(private _smcService:SMCService){}
@@ -50,6 +51,8 @@ export class AdminLayoutComponent implements OnInit {
         const new_data_user = that.UserArray.reverse().map((i) => Number(i));
         that.accmBalance=new_data_balance[new_data_balance.length-1];
         that.accmUsers=new_data_user[new_data_user.length-1];
+        
+        that.durationArray=Array.from(data[2])
         // console.log("accumulative");
         // console.log(new_data_user, that.accmUsers);
 
