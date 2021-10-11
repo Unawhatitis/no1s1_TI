@@ -151,54 +151,39 @@
                     <div class="col-md-6">
 
                         <div class="card card-login card-plain">
-                            <div class="header header-primary text-center">
-                                <div class="logo-container">
-                                </div>
-                            </div>
+                            <form (ngSubmit)="returnDep(pass_username)" #redeemForm="ngForm">
                                 <div class="header header-primary text-center">
                                     <div class="logo-container">
                                     </div>
                                 </div>
-
+                                <div class="header header-primary text-center">
+                                    <div class="logo-container">
+                                    </div>
+                                </div>
                                 <h3 class="title">Redeem</h3>
                                 <div class="header header-primary text-center">
                                     <div class="logo-container">
                                     </div>
                                 </div>
-
                                 <div class="content">
-                                    <form (ngSubmit)="returnDep()" #redeemForm="ngForm">
-                                        <div class="form-group">
-                                            <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
-                                                </div>
-                                                <input type="text" class="form-control" id="pass_username" 
-                                                        placeholder="User Name (required)" 
-                                                        name="pass_username"  [value]='pass_username' 
-                                                        (input)="pass_username=logdata($event)">
+                                    <div class="form-group">
+                                        <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
                                             </div>
+                                            <input type="text" class="form-control" id="pass_username" 
+                                                    placeholder="User Name (required)" 
+                                                    name="pass_username"  [value]='pass_username' 
+                                                    (input)="pass_username=logdata($event)">
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
-
                                 <div class="footer text-center">
                                     <button type="submit"
                                     [disabled] = "!pass_username"
                                     class="btn btn-primary btn-round btn-lg btn-block">Redeem Deposit</button>
                                 </div>
-                                <!-- type="submit" -->
-                                <!-- <div class="pull-left">
-                                    <h6>
-                                        <a href="#pablo" class="link">Create Account</a>
-                                    </h6>
-                                </div>
-                                <div class="pull-right">
-                                    <h6>
-                                        <a href="#pablo" class="link">Need Help?</a>
-                                    </h6>
-                                </div> -->
+                            </form>
                         </div>
                     </div>
                 </div>

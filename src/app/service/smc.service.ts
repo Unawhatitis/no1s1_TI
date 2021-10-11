@@ -115,9 +115,9 @@ export class SMCService {
   //*function: refund the deposit upon leaving
   //*input: user address and user name
   //*return: price of service and returned amount
-  public redeemDeposit(_sender,_username): Promise<any> {
+  public redeemDeposit(_username): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.no1s1App.methods.refundEscrow(_sender,_username).call(function(err, data) {
+      this.no1s1App.methods.refundEscrow(_username).send({from:this.defaultAcc,gas:"6721975"}, function(err, data) {
           if (err) {
             console.error(err);
             reject(err);

@@ -214,7 +214,7 @@ export class LoginComponent implements OnInit {
       } else if (!that.useraccount.address){
         console.log("account is required!")
       }else{ 
-      this._smcService.redeemDeposit(that.useraccount.address,redeem_user);
+      this._smcService.redeemDeposit(redeem_user);
       }
     }
     //////////////////////////////END
