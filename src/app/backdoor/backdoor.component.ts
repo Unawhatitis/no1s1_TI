@@ -39,6 +39,7 @@ export class BackdoorComponent implements OnInit {
   PVvoltage:any;
   systemenergy:any;
   Bstateofcharge:any;
+  _username:any;
   //userRegistered = false;
 
   ///////////
@@ -121,6 +122,15 @@ export class BackdoorComponent implements OnInit {
     let that=this;
     this._smcService.whoAmI().then(function(data){
       console.log("who am i ")
+      console.log(data)
+    })
+
+  }
+
+  check_user(_userName){
+    let that=this;
+    this._smcService.checkUserName(this._username).then(function(data){
+      console.log("check user name ")
       console.log(data)
     })
 

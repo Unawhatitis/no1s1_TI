@@ -144,7 +144,7 @@ export class AdminLayoutComponent implements OnInit {
       that.ctx = that.canvas.getContext("2d");
       var dataFirst = {
         data: [0, 19, 15, 20, 30, 40, 40, 50],
-        //new_data_balance, 
+        // new_data_balance, 
         fill: false,
         borderColor: '#fbc658',
         backgroundColor: 'transparent',

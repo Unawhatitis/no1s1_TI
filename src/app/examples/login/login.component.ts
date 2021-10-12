@@ -127,6 +127,7 @@ export class LoginComponent implements OnInit {
       console.log("this is values in onsubmit function:");
       console.log(this.userModel.username);
       console.log(this.userModel.duration);
+      //console.log(this.userModel.key);
       this.buyUsage(this.userModel.username,this.userModel.duration)
     }
 
@@ -143,7 +144,7 @@ export class LoginComponent implements OnInit {
           console.log("returned data ; compomnent level ; buy access");
           console.log(data);
           that._smcService.getUserInfo(start_username).then(function(data){
-            console.log("returned data ; compomnent level ; get info");
+            console.log("returned qr data ; compomnent level ; get info");
             console.log(data.qrCode);
             that.qrvalue = data.qrCode;
             that.generateQRCode();
@@ -163,6 +164,7 @@ export class LoginComponent implements OnInit {
       }
       else{
         this.value = this.qrvalue;
+        console.log(this.value);
         this.display = true;
       }
     }

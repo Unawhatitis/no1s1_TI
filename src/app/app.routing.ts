@@ -22,7 +22,7 @@ const routes: Routes =[
     { path: 'registration',       component: LoginComponent },
     { path: 'aboutme',     component: ProfileComponent },
     { path: 'examples/profile_RM',     component: ProfileRMComponent },
-    { path: 'backdoor',     component: BackdoorComponent },
+    { path: 'readme',     component: ProfileRMComponent },
     { path: 'test',     component:TestComponent},
     { path: 'dashboard' ,  component: AdminLayoutComponent, 
     loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'},

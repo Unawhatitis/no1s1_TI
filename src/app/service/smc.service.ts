@@ -70,7 +70,7 @@ export class SMCService {
   //*return: the key generated based on account and username
   public buyAccess(_duration,_userName,userAcc) : Promise<any> {
     return new Promise((resolve, reject) => {
-      this.no1s1App.methods.buy(_duration,_userName).send({value:'1000000000000000000',from:userAcc,gas:"8721975"}, function(err, data) {
+      this.no1s1App.methods.buy(_duration,_userName).send({value:'500000000000000000',from:userAcc,gas:"8721975"}, function(err, data) {
           if (err) {
             console.error(err);
             reject(err);
@@ -118,6 +118,18 @@ export class SMCService {
   public redeemDeposit(_username): Promise<any> {
     return new Promise((resolve, reject) => {
       this.no1s1App.methods.refundEscrow(_username).send({from:this.defaultAcc,gas:"6721975"}, function(err, data) {
+          if (err) {
+            console.error(err);
+            reject(err);
+          }
+          console.log(data);
+          resolve(data);
+      });
+    }) as Promise<any>; 
+  }
+  public checkUserName(_username): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.no1s1App.methods.checkUserName(_username).send({from:this.defaultAcc,gas:"6721975"}, function(err, data) {
           if (err) {
             console.error(err);
             reject(err);
@@ -182,7 +194,7 @@ export class SMCService {
 
   public returnBalance(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.no1s1App.methods.whatismybalance().call(function(err, data) {
+      this.no1s1App.methods.howRichAmI().call(function(err, data) {
           if (err) {
             console.error(err);
             reject(err);
