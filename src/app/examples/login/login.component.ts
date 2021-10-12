@@ -6,6 +6,7 @@ import {default as Web3} from 'web3';
 import { Subscription } from 'rxjs';
 import { UserComponent } from 'app/pages/user/user.component';
 import {User} from './user';
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
 //import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
 
 
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit {
     userForm: FormGroup;
 
     durations = [1,5,10,20,40]
-    userModel = new User('no one', this.durations[0],'');
+    userModel = new User('no one', this.durations[0],'no one');
     nameGiven = false;
 
     buyDropdown = new FormControl();
@@ -143,29 +144,50 @@ export class LoginComponent implements OnInit {
         this._smcService.buyAccess(start_duration,start_username,that.useraccount.address).then(function(data){
           console.log("returned data ; compomnent level ; buy access");
           console.log(data);
-          that._smcService.getUserInfo(start_username).then(function(data){
-            console.log("returned qr data ; compomnent level ; get info");
-            console.log(data.qrCode);
-            that.qrvalue = data.qrCode;
-            that.generateQRCode();
-            //console.log(data[0]);
-          });
           //that.qrvalue = data[0];
-          that.defaultqr = false;
+          //that.defaultqr = false;
         })
       }
     }
 
-    generateQRCode(){
-      if(this.qrvalue == ''){
-        this.display = false;
-        alert("Please enter the qrvalue");
-        return;
-      }
-      else{
-        this.value = this.qrvalue;
-        console.log(this.value);
-        this.display = true;
+    onGenerateQR(){
+      const that = this;
+      that.defaultqr = false;
+      console.log("on generation");
+      console.log(this.userModel.usernameqr);
+      this.generateQRCode(this.userModel.usernameqr)
+    }
+    generateQRCode(qr_username){
+      const that = this;
+      if(!qr_username ){
+        console.log("username is required!")
+      }else{
+        console.log("smart contract retrive qr value starts");
+        that._smcService.getUserInfo(qr_username).then(function(data){
+          console.log("returned qr data ; compomnent level ; get info");
+          console.log(data.qrCode);// or is this the key?? should called the key from look of smart contract
+          //console.log(Web3.utils.hexToAscii(data.qrCode));
+          //console.log(Web3.utils.hexToBytes(data.qrCode));
+          //console.log(Web3.utils.hexToNumber(data.qrCode));
+          //console.log(Web3.utils.hexToNumberString(data.qrCode));
+          //console.log(Web3.utils.hexToString(data.qrCode));
+          //console.log(Web3.utils.hexToUtf8(data.qrCode));
+          console.log(Web3.utils.bytesToHex(data.qrCode));
+          console.log(Web3.utils.asciiToHex(data.qrCode));
+          console.log(Web3.utils.fromAscii(data.qrCode));
+
+          that.qrvalue = data.qrCode;
+          if(that.qrvalue == ''){
+            this.display = false;
+            alert("qr value null");
+            return;
+          }
+          else{
+            that.value = that.qrvalue;
+            console.log(that.value);
+            that.display = true;
+          }
+        });
       }
     }
 

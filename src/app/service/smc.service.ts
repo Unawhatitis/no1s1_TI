@@ -84,7 +84,7 @@ export class SMCService {
   
   public getUserInfo(username_input):Promise<any> {
     return new Promise((resolve, reject) => {
-      this.no1s1App.methods.checkUserName(username_input).call(function(err, data) {
+      this.no1s1App.methods.checkUserName(username_input).call({from:this.defaultAcc}, function(err, data) {
           if (err) {
             console.error(err);
             reject(err);
@@ -112,6 +112,19 @@ export class SMCService {
     }) as Promise<any>; 
   }
 
+  // public checkUserName(_key): Promise<any> {
+  //   return new Promise((resolve, reject) => {
+  //     this.no1s1App.methods.checkUserName(_key).send({from:this.defaultAcc,gas:"6721975"}, function(err, data) {
+  //         if (err) {
+  //           console.error(err);
+  //           reject(err);
+  //         }
+  //         console.log(data);
+  //         resolve(data);
+  //     });
+  //   }) as Promise<any>; 
+  // }
+
   //*function: refund the deposit upon leaving
   //*input: user address and user name
   //*return: price of service and returned amount
@@ -127,18 +140,7 @@ export class SMCService {
       });
     }) as Promise<any>; 
   }
-  public checkUserName(_username): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.no1s1App.methods.checkUserName(_username).send({from:this.defaultAcc,gas:"6721975"}, function(err, data) {
-          if (err) {
-            console.error(err);
-            reject(err);
-          }
-          console.log(data);
-          resolve(data);
-      });
-    }) as Promise<any>; 
-  }
+
 ////////////////////////////////////////////////////////////
   public UserNumber(): Promise<any> {
     return new Promise((resolve, reject) => {
