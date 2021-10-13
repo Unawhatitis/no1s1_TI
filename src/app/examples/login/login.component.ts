@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     formSubmitted = false;
     userForm: FormGroup;
 
-    durations = [1,5,10,20,40]
+    durations = [0,1,5,10,20,40]
     userModel = new User('no one', this.durations[0],'no one');
     nameGiven = false;
 
@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit {
       this.transferService.getUserBalance().
       then(function(retAccount: any) {
         that.useraccount.address = retAccount.account;
-        that.useraccount.balance = retAccount.balance;
+        that.useraccount.balance = Web3.utils.fromWei(retAccount.balance,"ether");
         console.log('transfer.components :: getAccountAndBalance :: that.account');
         console.log(that.useraccount);
       }).catch(function(error) {
@@ -175,7 +175,7 @@ export class LoginComponent implements OnInit {
           console.log(Web3.utils.bytesToHex(data.qrCode));
           console.log(Web3.utils.asciiToHex(data.qrCode));
           console.log(Web3.utils.fromAscii(data.qrCode));
-
+          console.log(Web3.utils.fromAscii(data.qrCode));
           that.qrvalue = data.qrCode;
           if(that.qrvalue == ''){
             this.display = false;

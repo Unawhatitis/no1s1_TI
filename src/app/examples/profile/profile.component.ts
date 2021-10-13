@@ -53,8 +53,8 @@ export class ProfileComponent implements OnInit {
       })
       this._smcService.returnBalance().then(function(data){
         //console.log(data);
-        that.no1s1balance=data[0];
-        that.balance=data[1]*0.000000000000000001;
+        that.no1s1balance=Web3.utils.fromWei(data,"ether");
+        console.log(that.no1s1balance)
       })
 
 ///////////////////////////3d tryout//////////////////////////
