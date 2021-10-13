@@ -6,32 +6,36 @@
             <div class="content-center">
                 <img src="assets/img/logo_inner_white.png" width="70" alt="">
                 <h1 class="title">Read Me</h1> 
-                <p class="category">Please read before attempting to enter my space.</p> 
+                <p class="category">Instructions to enter my space.</p> 
             </div>
         </div>
     </div>
-    <!-- <div class="section">
-        <div class="container">
-          <div class="button-container">
-              <a href="#button" [routerLink]="['/examples/login']"  class="btn btn-danger btn-round btn-lg">Enter the Space</a>
-          </div>
-        </div>
-    </div> -->
 
     <div class="section section-tabs">
         <div class="container">
-            <div class="row">
+            <div class="row col-md-12">
+                <h5 class="description">Here I explain you how you can medidate with me. Please note that I am still being actively developed. In case you encounter difficulties, please let my <a target="_blank" href="/team">team</a> know.</h5>
+                <h5 class="description">I live on the <a target="_blank" href="https://ethereum.org/en/">Ethereum</a> blockchain, where my logic and funds are managed by my smart contracts. You want to know more about how blockchain and Ethereum work? Check out <a target="_blank" href="https://www.preethikasireddy.com/post/how-does-ethereum-work-anyway">this article</a>. You can find my <a target="_blank" href="https://rinkeby.etherscan.io/address/0x8e5d2494FFd23FB458dA4EA9b8AD9508955C1697">smart contract</a> on the Ethereum Rinkeby test network. The smart contract code is available <a target="_blank" href="https://github.com/Unawhatitis/no1s1_TI/blob/main/contracts/no1s1data.sol">here</a>.</h5>
+                <h5 class="description">In order to interact with me, you need an Ethereum wallet. I can recommend <a target="_blank" href="https://metamask.io/download.html">Metamask</a>, which is available both for desktop and mobile browsers.</h5>
+                <h5 class="description">
+                    <ol>
+                    <li>Download the Metamask wallet.</li>
+                    <li>Set up the wallet following the instructions. Keep your seed phrase to recover your wallet and password to sign transactions save!</li>
+                    <li>Point the wallet to the Ethereum Rinkeby test network instead of the Ethereum mainnet.</li>
+                    <li>You need Ether to pay me. Luckily, on the test network this does not cost actual money. You can request test-Ether with this <a target="_blank" href="https://metamask.io/download.html">faucet</a>. You need at least 0.5 ETH to pay the initial escrow amount. After medidating the price will be calculated (0.01 ETH/min) and deducted from the escrow.</li>
+                    <li>Go to the <a target="_blank" href="./registration">registration tab</a>.</li>
+                    <li>Request access by entering a username and the time you want to meditate in minutes (1-60min). Execute the transaction by clicking the "Transfer" button. Sign the transaction with Metamask. Please remember your username to redeem your escrow in the end.</li>
+                    <li>Scan the generated QR code at the entrance. Enter my space, close the door, and sit down so I can detect that you entered the space.</li>
+                    <li>Meditate...</li>
+                    <li>Exit the space and close the door.</li>
+                    <li>Request back the remaining escrow funds by entering the username and click the "Redeem Escrow" button. Sign the transaction with your Metamask wallet.</li> 
+                </ol>
+                </h5>
+
+                <!--
                 <div class="col-xl-10 ml-auto col-xl-6 mr-auto">
                     <h4>This section is designed to help first-time users get started.</h4>
                         <br>
-                        <!-- Upon first-time usage, 
-                        <br>
-                        &nbsp;&nbsp;&nbsp; o you have never used or hold crypto currency and would like to install one, please read General Info and Crypto Wallet.
-                        <br>
-                        &nbsp;&nbsp;&nbsp; o you have never used or hold crypto currency and do not want to install any extension. However, you still would like to experience the space for a test experience. please read General Info and Test Experience.
-                        <br>
-                        &nbsp;&nbsp;&nbsp; o you have blockchain experience and have used crypto wallet, please read General Info.</p>  -->
-
                         <div class="typography-line">
                             <span><h5>General Information</h5></span>
                             <blockquote>
@@ -54,45 +58,12 @@
                                 </p>
                             </blockquote>
                         </div>
-                        <!-- <div class="typography-line">
-                            <span><h6>
-                                Additional Information</h6></span>
-                            <blockquote>
-                                <p class="blockquote blockquote-primary">
-                                    
-                                </p>
-                            </blockquote>
-                        </div> -->
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
     <footer class="footer" data-background-color="black">
         <div class="container">
-            <!--<nav>
-                <ul>
-                    <li>
-                        <a href="#">
-                            no1s1
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            About Team
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/examples/profile">
-                            About Me
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://ethz.ch/de.html">
-                            ETHZ License
-                        </a>
-                    </li>
-                </ul>
-            </nav>-->
             <div class="copyright">
                 &copy;
                 {{data | date: 'yyyy'}}, Designed by

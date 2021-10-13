@@ -23,7 +23,7 @@
                                         <!-- <p><strong>Maximum Stay</strong> <br>{{Aduration}}Min</p>
                                         <p><strong>Cost</strong> <br>{{Cost}} WEI</p> -->
                                         <p><strong>Address</strong><br>{{useraccount.address}} </p>
-                                        <p><strong>Balance</strong><br>{{useraccount.balance}} WEI</p>
+                                        <p><strong>Balance</strong><br>{{useraccount.balance}} ETH</p>
                                     </div>
                                 </div>
                             </div>
@@ -123,17 +123,31 @@
                                     <div class="logo-container">
                                     </div>
                                 </div>
+                                <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" id="usernameqr" 
+                                            required
+                                            placeholder="User Name (required)" 
+                                            name="usernameqr"  [value]='userModel.usernameqr' 
+                                            (input)="userModel.usernameqr=logdata($event)">
+                                </div>
                                 <div class="row" style="background-color:rgba(0, 0, 0, 0.13);">
                                     <div class="container content-center">
-                                        <h5 style="color: rgb(223, 81, 29);"><strong>Your QR Code</strong></h5>
+                                        <!-- <h5 style="color: rgb(223, 81, 29);"><strong>Your QR Code</strong></h5> -->
                                         <qrcode #qrcode *ngIf="display" [qrdata]="value" [width]="256" [errorCorrectionLevel]="'M'" elementType="img"></qrcode>
                                     </div>
                                 </div>
 
                                 <div class="footer text-center">
-                                    <button type="submit"
+                                    <button (click)="onGenerateQR()"
                                     class="btn btn-primary btn-round btn-lg btn-block"
-                                    [disabled]="defaultqr?true:null">Download QR code</button>                               </div>
+                                    [disabled]="!userModel.usernameqr">Generate QR code</button>                                
+                                </div>
+                                <button type="submit"
+                                    class="btn btn-primary btn-round btn-lg btn-block"
+                                    [disabled]="defaultqr?true:null">Download QR code</button>
                                 <!-- type="submit" -->
                                 <!-- <div class="pull-left">
                                     <h6>
@@ -151,54 +165,39 @@
                     <div class="col-md-6">
 
                         <div class="card card-login card-plain">
-                            <div class="header header-primary text-center">
-                                <div class="logo-container">
-                                </div>
-                            </div>
+                            <form (ngSubmit)="returnDep(pass_username)" #redeemForm="ngForm">
                                 <div class="header header-primary text-center">
                                     <div class="logo-container">
                                     </div>
                                 </div>
-
+                                <div class="header header-primary text-center">
+                                    <div class="logo-container">
+                                    </div>
+                                </div>
                                 <h3 class="title">Redeem</h3>
                                 <div class="header header-primary text-center">
                                     <div class="logo-container">
                                     </div>
                                 </div>
-
                                 <div class="content">
-                                    <form (ngSubmit)="returnDep()" #redeemForm="ngForm">
-                                        <div class="form-group">
-                                            <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
-                                                </div>
-                                                <input type="text" class="form-control" id="pass_username" 
-                                                        placeholder="User Name (required)" 
-                                                        name="pass_username"  [value]='pass_username' 
-                                                        (input)="pass_username=logdata($event)">
+                                    <div class="form-group">
+                                        <div class="input-group form-group-no-border input-lg" [ngClass]="{'input-group-focus':focus===true}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
                                             </div>
+                                            <input type="text" class="form-control" id="pass_username" 
+                                                    placeholder="User Name (required)" 
+                                                    name="pass_username"  [value]='pass_username' 
+                                                    (input)="pass_username=logdata($event)">
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-
-
                                 <div class="footer text-center">
                                     <button type="submit"
                                     [disabled] = "!pass_username"
                                     class="btn btn-primary btn-round btn-lg btn-block">Redeem Deposit</button>
                                 </div>
-                                <!-- type="submit" -->
-                                <!-- <div class="pull-left">
-                                    <h6>
-                                        <a href="#pablo" class="link">Create Account</a>
-                                    </h6>
-                                </div>
-                                <div class="pull-right">
-                                    <h6>
-                                        <a href="#pablo" class="link">Need Help?</a>
-                                    </h6>
-                                </div> -->
+                            </form>
                         </div>
                     </div>
                 </div>
