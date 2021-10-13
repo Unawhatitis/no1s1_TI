@@ -3,7 +3,6 @@ const Web3 = require('web3');
 
 declare let require: any;
 declare let window: any;
-//const tokenAbi = require('../../../build/contracts/Transfer.json');
 let web3;
 const tokenAbi_main = require('../../../build/contracts/no1s1App.json');
 
@@ -26,7 +25,8 @@ export class TransferService {
       if (typeof window.web3 !== 'undefined') {
         this.web3 = window.ethereum.currentProvider;
       } else {
-        this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
+        window.alert("current provider do not work")
+        //this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
       }
       console.log('transfer.service :: constructor :: window.ethereum');
       window.web3 = new Web3(window.ethereum);
