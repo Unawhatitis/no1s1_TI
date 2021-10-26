@@ -61,7 +61,7 @@ export class SMCService {
       this.no1s1Data = new window.web3.eth.Contract(this.DataABI, this.DataContractAddress);
       console.log(this.no1s1App);
       console.log(this.no1s1Data); 
-      this.defaultAcc="0x7cC33b280C73B24D3ebFA225356aFa329d364fA1";
+      this.defaultAcc="0xf86f9b72E01fa814388664dfcAeB2d8CE9740DFd";
     }
   }
   
