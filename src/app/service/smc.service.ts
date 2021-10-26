@@ -23,10 +23,10 @@ export class SMCService {
   //private ethmethod:any;
   public no1s1App:any;
   public no1s1Data:any;
-  public AppContractAddress = "0xDe52Fa5D9204F05B73fdef162805E2946fB76892";
-  public DataContractAddress = "0x8e5d2494FFd23FB458dA4EA9b8AD9508955C1697";
-  public AppABI = no1s1AppAbi;
-  public DataABI = no1s1DataAbi;
+  public AppContractAddress = "0x23c9C6AEB8083864d89816dA91630f19EF65a09c";
+  public DataContractAddress = "0x6E2E218b4d70adD2B5126B9ef0D2D08371b7bbc2";
+  public AppABI = no1s1AppAbi.abi;
+  public DataABI = no1s1DataAbi.abi;
 
 
 
@@ -61,7 +61,7 @@ export class SMCService {
       this.no1s1Data = new window.web3.eth.Contract(this.DataABI, this.DataContractAddress);
       console.log(this.no1s1App);
       console.log(this.no1s1Data); 
-      this.defaultAcc="0x7cC33b280C73B24D3ebFA225356aFa329d364fA1";
+      this.defaultAcc="0xf86f9b72E01fa814388664dfcAeB2d8CE9740DFd";
     }
   }
   
