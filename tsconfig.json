@@ -4,26 +4,11 @@
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
-    "paths": {
-      "crypto": [
-        "../node_modules/crypto-browserify"
-      ],
-      "stream": [
-        "../node_modules/stream-browserify"
-      ],
-      "http": [
-        "../node_modules/@angular/common/http"
-      ],
-      "https": [
-        "../node_modules/https-browserify"
-      ],
-      "os": [
-        "../node_modules/https-browserify"
-      ],
-      "path": [
-        "../node_modules/path-browserify"
-      ]
-    },
+    // "paths":{
+    //   "crypto":[
+    //     "./node_modules/eth-lib/lib/bytes.js"
+    //   ]
+    // },
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
