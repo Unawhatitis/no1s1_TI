@@ -163,19 +163,9 @@ export class LoginComponent implements OnInit {
         console.log("username is required!")
       }else{
         console.log("smart contract retrive qr value starts");
-        that._smcService.getUserInfo(qr_username).then(function(data){
+        that._smcService.getUserInfo(qr_username,that.useraccount.address).then(function(data){
           console.log("returned qr data ; compomnent level ; get info");
           console.log(data.qrCode);// or is this the key?? should called the key from look of smart contract
-          //console.log(Web3.utils.hexToAscii(data.qrCode));
-          //console.log(Web3.utils.hexToBytes(data.qrCode));
-          //console.log(Web3.utils.hexToNumber(data.qrCode));
-          //console.log(Web3.utils.hexToNumberString(data.qrCode));
-          //console.log(Web3.utils.hexToString(data.qrCode));
-          //console.log(Web3.utils.hexToUtf8(data.qrCode));
-          console.log(Web3.utils.bytesToHex(data.qrCode));
-          console.log(Web3.utils.asciiToHex(data.qrCode));
-          console.log(Web3.utils.fromAscii(data.qrCode));
-          console.log(Web3.utils.fromAscii(data.qrCode));
           that.qrvalue = data.qrCode;
           if(that.qrvalue == ''){
             this.display = false;

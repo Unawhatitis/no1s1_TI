@@ -127,14 +127,14 @@ export class BackdoorComponent implements OnInit {
 
   }
 
-  check_user(_userName){
-    let that=this;
-    this._smcService.getUserInfo(this._username).then(function(data){
-      console.log("check user name ")
-      console.log(data)
-    })
+  // check_user(_userName){
+  //   let that=this;
+  //   this._smcService.getUserInfo(this._username,useraccount).then(function(data){
+  //     console.log("check user name ")
+  //     console.log(data)
+  //   })
 
-  }
+  // }
 
 
 
