@@ -4,8 +4,7 @@ const Web3 = require('web3');
 
 declare let require: any;
 declare let window: any;
-//const tokenAbi = require('../../../build/contracts/no1s1App.json');
-const no1s1DataAbi = require('../../../build/contracts/no1s1data.json');
+ const no1s1DataAbi = require('../../../build/contracts/no1s1data.json');
 const no1s1AppAbi = require('../../../build/contracts/no1s1App.json');
 
 
@@ -27,8 +26,6 @@ export class SMCService {
   public DataContractAddress = "0x6E2E218b4d70adD2B5126B9ef0D2D08371b7bbc2";
   public AppABI = no1s1AppAbi.abi;
   public DataABI = no1s1DataAbi.abi;
-
-
 
   constructor() {
     //this.accounts=this.web3.eth.accounts;
@@ -82,9 +79,9 @@ export class SMCService {
     }) as Promise<any>; 
   }
   
-  public getUserInfo(username_input):Promise<any> {
+  public getUserInfo(username_input,useraccount):Promise<any> {
     return new Promise((resolve, reject) => {
-      this.no1s1App.methods.checkUserName(username_input).call({from:this.defaultAcc}, function(err, data) {
+      this.no1s1App.methods.checkUserName(username_input).call({from:useraccount}, function(err, data) {
           if (err) {
             console.error(err);
             reject(err);
