@@ -4,7 +4,7 @@ const Web3 = require('web3');
 
 declare let require: any;
 declare let window: any;
- const no1s1DataAbi = require('../../../build/contracts/no1s1data.json');
+const no1s1DataAbi = require('../../../build/contracts/no1s1data.json');
 const no1s1AppAbi = require('../../../build/contracts/no1s1App.json');
 
 

@@ -4,36 +4,28 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ComponentsComponent } from './components/components.component';
-import { LandingComponent } from './examples/landing/landing.component';
-import { LoginComponent } from './examples/login/login.component';
-import { ProfileComponent } from './examples/profile/profile.component';
-import { ProfileRMComponent } from './examples/profile_RM/profile_RM.component';
-import { NucleoiconsComponent } from './components/nucleoicons/nucleoicons.component';
-import { BackdoorComponent} from './backdoor/backdoor.component';
-import { TestComponent } from './test/test.component';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { TeamComponent } from './components/Team/Team.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ReadMeComponent } from './components/ReadMe/ReadMe.component';
 
+import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
+
+//import { BackdoorComponent} from './backdoor/backdoor.component';
+//import { TestComponent } from './test/test.component';
 
 const routes: Routes =[
     { path: '', redirectTo: 'index', pathMatch: 'full' },
     { path: 'index',                component: ComponentsComponent },
-    { path: 'nucleoicons',          component: NucleoiconsComponent },
-    { path: 'team',     component: LandingComponent },
+    //{ path: 'BackdoorComponent',          component: BackdoorComponent },
+    { path: 'team',     component: TeamComponent },
     { path: 'registration',       component: LoginComponent },
     { path: 'aboutme',     component: ProfileComponent },
-    { path: 'examples/profile_RM',     component: ProfileRMComponent },
-    { path: 'readme',     component: ProfileRMComponent },
-    { path: 'test',     component:TestComponent},
+    { path: 'readme',     component: ReadMeComponent },
+    //{ path: 'test',     component:TestComponent},
     { path: 'dashboard' ,  component: AdminLayoutComponent, 
-    loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'},
-    // component:AdminLayoutComponent, 
-    // children: [
-    //             {
-    //             path: '',
-    //             loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-    //             }
-    //             ]
-    // },
+    loadChildren: './admin-layout/admin-layout.module#AdminLayoutModule'},
+
 
 ];
 

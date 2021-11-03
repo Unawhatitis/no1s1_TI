@@ -5,15 +5,13 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { NouisliderModule } from 'ng2-nouislider';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { RouterModule } from '@angular/router';
-//import { NavbarComponent } from '../shared/navbar/navbar.component';
 
-//import { BasicelementsComponent } from './basicelements/basicelements.component';
-// import { NavigationComponent } from './navigation/navigation.component';
-// import { TypographyComponent } from './typography/typography.component';
-// import { NucleoiconsComponent } from './nucleoicons/nucleoicons.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ReadMeComponent } from './ReadMe/ReadMe.component';
+import { LoginComponent } from '../components/login/login.component';
+import { TeamComponent } from '../components/Team/Team.component';
+
 import { ComponentsComponent } from './components.component';
-// import { NotificationComponent } from './notification/notification.component';
-// import { NgbdModalBasic } from './modal/modal.component';
 
 @NgModule({
     imports: [
@@ -27,13 +25,11 @@ import { ComponentsComponent } from './components.component';
       ],
     declarations: [
         ComponentsComponent,
-        //NavbarComponent,
-        // BasicelementsComponent,
-        // NavigationComponent,
-        // TypographyComponent,
-        // NucleoiconsComponent,
-        // NotificationComponent,
-        // NgbdModalBasic
+        ProfileComponent,
+        ReadMeComponent,
+        LoginComponent,
+        TeamComponent
+
     ],
     exports:[ ComponentsComponent ]
 })
