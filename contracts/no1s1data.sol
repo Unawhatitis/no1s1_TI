@@ -89,7 +89,7 @@ contract no1s1Data {
     // Emitted when new purchase was made
     event newQRcode(bytes32 qrCode);
     // Emitted when access suceeded
-    event accessSuceeded(bool success, uint256 allowedTime);
+    event accessSuceeded(uint256 allowedTime);
     // Emitted when user active/inactive
     event userActive(bool userActive);
     // Emitted when user left
@@ -347,11 +347,11 @@ contract no1s1Data {
             // update occupancy status so noone else can buy access
             no1s1Occupation = false;
             // emit event to unlock door for allowed duration
-            emit accessSuceeded(true, allowedDuration);
+            emit accessSuceeded(allowedDuration);
         }
         else {
-            // emit event
-            emit accessSuceeded(false, 0);
+            // revert transaction
+            revert("No meditation time bought for this key.");
         }
     }
 
@@ -361,6 +361,8 @@ contract no1s1Data {
     */
     function checkActivity(bool _pressureDetected, bytes32 _key) external isCallerAuthorized requireIsOperational
     {
+        // check wether access has been checked
+        require(no1s1Occupation == false, "Access key has not been checked yet.");
         // check whether access has already been registered
         require(no1s1Users[_key].accessed == false, "The access has already been registered.");
         // check wether user entered the space.

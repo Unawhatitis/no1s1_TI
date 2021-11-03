@@ -27,7 +27,6 @@ export class SMCService {
   public AppABI = no1s1AppAbi.abi;
   public DataABI = no1s1DataAbi.abi;
 
-
   constructor() {
     //this.accounts=this.web3.eth.accounts;
     //this.ethmethod=this.web3.eth;
