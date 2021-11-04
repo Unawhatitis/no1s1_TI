@@ -44,7 +44,7 @@ export class SMCService {
         //this.no1s1App = new this.web3.eth.Contract(no1s1AppAbi.abi, this.AppContractAddress);
         //this.no1s1Data = new this.web3.eth.Contract(no1s1DataAbi.abi, this.DataContractAddress);
       } else {
-        window.alert("cannot connect to current provider!")
+        window.alert("cannot connect to the Ethereum chain, have you connect your wallet?")
         //this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
         //this.no1s1App = new this.web3.eth.Contract(no1s1AppAbi.abi, this.AppContractAddress);
         //this.no1s1Data = new this.web3.eth.Contract(no1s1DataAbi.abi, this.DataContractAddress);
