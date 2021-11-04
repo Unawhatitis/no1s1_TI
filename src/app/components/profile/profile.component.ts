@@ -98,8 +98,6 @@ export class ProfileComponent implements OnInit {
             root.scale.set(2.5,2.5,2.5);
             mesh=root;
             scene.add(mesh);
-            //console.log(mesh.userData);
-            //console.log(mesh.children);
             initGUI(mesh.children);
           });
         });
@@ -122,9 +120,6 @@ export class ProfileComponent implements OnInit {
 
         stats = new Stats();
 				document.body.appendChild( stats.dom );
-
-        //document.addEventListener( 'mousemove', onDocumentMouseMove );
-
         window.addEventListener( 'mousemove', onMouseMove );
 
         
@@ -167,9 +162,6 @@ export class ProfileComponent implements OnInit {
       function render() {
 
         raycaster.setFromCamera( mouse, camera );
-
-        //console.log(scene.children);
-        //console.log(mesh.children); mesh children are mesh 
 
         const intersects = raycaster.intersectObjects(mesh.children);
 
@@ -237,10 +229,6 @@ export class ProfileComponent implements OnInit {
 
       }
 
-      //requestAnimationFrame(render);
-
-
-      //window.requestAnimationFrame(render);
       
 
     }

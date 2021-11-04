@@ -6,9 +6,6 @@ import {default as Web3} from 'web3';
 import { Subscription } from 'rxjs';
 import { UserComponent } from 'app/examples/pages/user/user.component';
 import {User} from './user';
-//import { typeWithParameters } from '@angular/compiler/src/render3/util';
-//import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
-
 
 @Component({
   selector: 'app-login',
@@ -50,29 +47,11 @@ export class LoginComponent implements OnInit {
     userName:any;
     pass_username :any;
     defaultqr = true;
-    
-    //***********duration form************//
-    // accountValidationMessages = {
-    //   transferAddress: [
-    //     { type: 'required', message: 'Transfer Address is required' },
-    //     { type: 'minLength', message: 'Transfer Address must be 42 characters long' },
-    //     { type: 'maxLength', message: 'Transfer Address must be 42 characters long' }
-    //   ],
-    //   amount: [
-    //     { type: 'required', message: 'Amount is required' },
-    //     { type: 'pattern', message: 'Amount must be a positive number' }
-    //   ],
-    //   // remarks: [
-    //   //   { type: 'required', message: 'Remarks are required' }
-    //   // ]
-    // };
-
-
 
     constructor(
       private _smcService:SMCService, 
       private transferService: TransferService, 
-      private fb:FormBuilder) { } //, private fb: FormBuilder
+      private fb:FormBuilder) { } 
 
     ngOnInit() {
 

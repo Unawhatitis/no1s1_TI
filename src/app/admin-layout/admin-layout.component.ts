@@ -66,12 +66,6 @@ export class AdminLayoutComponent implements OnInit {
           datearray.push(date);
         }
         const labels = datearray.reverse();
-
-        // doSomething().then((data) => {do stuff after data returns})
-
-        // const data = await doSomething()
-        // //do stuff here
-
   
         that.chartHours = new Chart(that.ctx, {
           type: 'line',

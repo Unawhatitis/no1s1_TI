@@ -19,9 +19,10 @@
 }
 
 .page-header{
-    height: 155vh;
-    max-height: 1550px;
-    //80vh 1050 px
+    height: 200vh;
+    max-height: 2000px;
+    //changed 155 1550 
+    //original 80vh 1050 px
     padding: 0;
     color: $white-color;
     position: relative;
@@ -51,11 +52,11 @@
 
         > .content-center{
             position: absolute;
-            top: 50%;
+            top: 40%;
             left: 50%;
 
-            -ms-transform: translate(-50%,-50%);
-            -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-40%,-50%);
+            -webkit-transform: translate(-40%,-50%);
             transform: translate(-50%,-50%);
 
             text-align: center;
@@ -107,6 +108,7 @@
         display: none;
     }
 }
+
 
 .section-story-overview{
     padding: 50px 0;
