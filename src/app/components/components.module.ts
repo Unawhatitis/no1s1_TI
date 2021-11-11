@@ -10,7 +10,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ReadMeComponent } from './ReadMe/ReadMe.component';
 import { LoginComponent } from '../components/login/login.component';
 import { TeamComponent } from '../components/Team/Team.component';
-
+import { QRCodeModule } from 'angularx-qrcode';
 import { ComponentsComponent } from './components.component';
 
 @NgModule({
@@ -21,7 +21,8 @@ import { ComponentsComponent } from './components.component';
         NouisliderModule,
         RouterModule,
         JwBootstrapSwitchNg2Module,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        QRCodeModule
       ],
     declarations: [
         ComponentsComponent,
