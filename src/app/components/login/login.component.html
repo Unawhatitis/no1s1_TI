@@ -88,8 +88,8 @@
                                 <div class="logo-container">
                                 </div>
                             </div>
-                            <!-- <form [formGroup]="userForm" (ngSubmit)="submitForm()" novalidate autocomplete="off"> -->
-                            <form class="form-group" (ngSubmit)="downloadQR()" novalidate autocomplete="off" method="" action="">
+                            <!-- <form [formGroup]="userForm" (ngSubmit)="downloadQR()" novalidate autocomplete="off"> -->
+                            <form class="form-group" novalidate autocomplete="off" method="" action="">
                                 <div class="header header-primary text-center">
                                     <div class="logo-container">
                                     </div>
@@ -122,7 +122,7 @@
                                     class="btn btn-primary btn-round btn-lg btn-block"
                                     [disabled]="!userModel.usernameqr">Generate QR code</button>                                
                                 </div>
-                                <button type="submit"
+                                <button (click)="downloadQR()"
                                     class="btn btn-primary btn-round btn-lg btn-block"
                                     [disabled]="defaultqr?true:null">Download QR code</button>
                             </form>
