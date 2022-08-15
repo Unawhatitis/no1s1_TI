@@ -4,8 +4,8 @@ const Web3 = require('web3');
 
 declare let require: any;
 declare let window: any;
-const no1s1DataAbi = require('../../../build/contracts/no1s1data.json');
-const no1s1AppAbi = require('../../../build/contracts/no1s1App.json');
+const no1s1DataAbi = require('../../../build/contracts/no1s1data_uzh.json');
+const no1s1AppAbi = require('../../../build/contracts/no1s1app_uzh.json');
 
 
 @Injectable({
@@ -22,8 +22,8 @@ export class SMCService {
   //private ethmethod:any;
   public no1s1App:any;
   public no1s1Data:any;
-  public AppContractAddress = "0x23c9C6AEB8083864d89816dA91630f19EF65a09c";
-  public DataContractAddress = "0x6E2E218b4d70adD2B5126B9ef0D2D08371b7bbc2";
+  public AppContractAddress = "0xE7C1FBCE16D2f88F890A6a2c27B93B4636A80f5D";//"0x23c9C6AEB8083864d89816dA91630f19EF65a09c";
+  public DataContractAddress = "0x95BA89B7cc5C8aC3F1Bd108159B39Cf388B059e1";//"0x6E2E218b4d70adD2B5126B9ef0D2D08371b7bbc2";
   public AppABI = no1s1AppAbi.abi;
   public DataABI = no1s1DataAbi.abi;
 
@@ -58,7 +58,7 @@ export class SMCService {
       this.no1s1Data = new window.web3.eth.Contract(this.DataABI, this.DataContractAddress);
       console.log(this.no1s1App);
       console.log(this.no1s1Data); 
-      this.defaultAcc="0xf86f9b72E01fa814388664dfcAeB2d8CE9740DFd";
+      this.defaultAcc="0xf86f9b72E01fa814388664dfcAeB2d8CE9740DFd"; //back-end account??
     }
   }
   
@@ -67,7 +67,7 @@ export class SMCService {
   //*return: the key generated based on account and username
   public buyAccess(_duration,_userName,userAcc) : Promise<any> {
     return new Promise((resolve, reject) => {
-      this.no1s1App.methods.buy(_duration,_userName).send({value:'500000000000000000',from:userAcc,gas:"8721975"}, function(err, data) {
+      this.no1s1App.methods.buy(_duration,_userName).send({value:'500000000000000000',from:userAcc}, function(err, data) { //gas:"8721975"
           if (err) {
             console.error(err);
             reject(err);

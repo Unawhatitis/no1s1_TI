@@ -4,7 +4,7 @@ const Web3 = require('web3');
 declare let require: any;
 declare let window: any;
 let web3;
-const tokenAbi_main = require('../../../build/contracts/no1s1App.json');
+const tokenAbi_main = require('../../../build/contracts/no1s1app_uzh.json');
 
 
 @Injectable({

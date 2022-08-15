@@ -1,0 +1,785 @@
+{
+  "abi":[
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "appContract",
+          "type": "address"
+        }
+      ],
+      "name": "AuthorizedContract",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "appContract",
+          "type": "address"
+        }
+      ],
+      "name": "DeAuthorizedContract",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "batteryCurrency",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "batteryVoltage",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "batteryStateOfCharge",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "pvVoltage",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "systemEnergy",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "logTime",
+          "type": "uint256"
+        }
+      ],
+      "name": "TechLogUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "allowedTime",
+          "type": "uint256"
+        }
+      ],
+      "name": "accessSuceeded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalMeditationTime",
+          "type": "uint256"
+        }
+      ],
+      "name": "exitSuccessful",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "qrCode",
+          "type": "bytes32"
+        }
+      ],
+      "name": "newQRcode",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amountReturned",
+          "type": "uint256"
+        }
+      ],
+      "name": "refundSuccessful",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "userActive",
+          "type": "bool"
+        }
+      ],
+      "name": "userActive",
+      "type": "event"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "appContract",
+          "type": "address"
+        }
+      ],
+      "name": "authorizeContract",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_Bcurrent",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Bvoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_BSOC",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Pvoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Senergy",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Time",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "FULL_VALUE",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "GOOD_VALUE",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "LOW_VALUE",
+          "type": "uint256"
+        }
+      ],
+      "name": "broadcastData",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_selectedDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "txSender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "ESCROW_AMOUNT",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "MAX_DURATION",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "GOOD_DURATION",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "LOW_DURATION",
+          "type": "uint256"
+        }
+      ],
+      "name": "buy",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "GOOD_DURATION",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "LOW_DURATION",
+          "type": "uint256"
+        }
+      ],
+      "name": "checkAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_pressureDetected",
+          "type": "bool"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "checkActivity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "MEDITATION_PRICE",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "FULL_DURATION",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "GOOD_DURATION",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "LOW_DURATION",
+          "type": "uint256"
+        }
+      ],
+      "name": "checkBuyStatus",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "batteryState",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "availableMinutes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "costPerMinute",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lastUpdate",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "checkLastTechLogs",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "pvVoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "systemPower",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryChargeState",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryCurrency",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryVoltage",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "checkUserKey",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "meditationDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "accessed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "actualDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "left",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "escrow",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        }
+      ],
+      "name": "checkUserName",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "qrCode",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "meditationDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "accessed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "actualDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "left",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "escrow",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "appContract",
+          "type": "address"
+        }
+      ],
+      "name": "deAuthorizeContract",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_doorOpened",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_actualDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_time",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "MEDITATION_PRICE",
+          "type": "uint256"
+        }
+      ],
+      "name": "exit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getUsageLog",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "users",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "balances",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "escrows",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "durations",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "howAmI",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "accessability",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "occupation",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryState",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalUsers",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "myBalance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "howRichAmI",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "no1s1Balance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isOperational",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "no1s1TechLogs",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "batteryCurrency",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryVoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryChargeState",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pvVoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "systemPower",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "time",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "no1s1UsageLogs",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "Earnings",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "Escrow",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "Users",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "Duration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "time",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "MEDITATION_PRICE",
+          "type": "uint256"
+        }
+      ],
+      "name": "refundEscrow",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "mode",
+          "type": "bool"
+        }
+      ],
+      "name": "setAccessabilityStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "mode",
+          "type": "bool"
+        }
+      ],
+      "name": "setOccupationStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "mode",
+          "type": "bool"
+        }
+      ],
+      "name": "setOperatingStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "whoAmI",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "no1s1Address",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ]
+}

@@ -1,0 +1,483 @@
+{
+  "abi":
+  [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "dataContract",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "backendAddress",
+          "type": "address"
+        }
+      ],
+      "name": "AuthorizedBackend",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "backendAddress",
+          "type": "address"
+        }
+      ],
+      "name": "DeAuthorizedBackend",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "backendAddress",
+          "type": "address"
+        }
+      ],
+      "name": "authorizeBackend",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_Bcurrent",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Bvoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_BSOC",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Pvoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Senergy",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_Time",
+          "type": "uint256"
+        }
+      ],
+      "name": "broadcastData",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_selectedDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        }
+      ],
+      "name": "buy",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "checkAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_pressureDetected",
+          "type": "bool"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "checkActivity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "checkBuyStatus",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "batteryState",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "availableMinutes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "costPerMinute",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lastUpdate",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "checkLastTechLogs",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "pvVoltage",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "systemPower",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryChargeState",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryCurrency",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryVoltage",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        }
+      ],
+      "name": "checkUserKey",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "meditationDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "accessed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "actualDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "left",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "escrow",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        }
+      ],
+      "name": "checkUserName",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "qrCode",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "meditationDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "accessed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "actualDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "left",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "escrow",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "backendAddress",
+          "type": "address"
+        }
+      ],
+      "name": "deAuthorizeBackend",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_doorOpened",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_actualDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_key",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_time",
+          "type": "uint256"
+        }
+      ],
+      "name": "exit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getUsageLog",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "users",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "balances",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "escrows",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "durations",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "howAmI",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "accessability",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "occupation",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "batteryState",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalUsers",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "myBalance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "howRichAmI",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "no1s1Balance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isDataContractOperational",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        }
+      ],
+      "name": "refundEscrow",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "mode",
+          "type": "bool"
+        }
+      ],
+      "name": "setAccessabilityStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "mode",
+          "type": "bool"
+        }
+      ],
+      "name": "setOccupationStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "whoAmI",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "no1s1Address",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}
