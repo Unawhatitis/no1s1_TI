@@ -198,7 +198,7 @@ export class LoginComponent implements OnInit {
     //////////////////////////////END
 
     //STEP 3 : Redeem the deposit
-    returnDep(redeem_user){
+    returnDep(redeem_user,user_account){
       console.log("this is values in returnDep function:");
       console.log(redeem_user);
       const that = this; 
@@ -207,7 +207,7 @@ export class LoginComponent implements OnInit {
       } else if (!that.useraccount.address){
         console.log("account is required!")
       }else{ 
-      this._smcService.redeemDeposit(redeem_user);
+      this._smcService.redeemDeposit(redeem_user,that.useraccount.address);
       }
     }
     //////////////////////////////END
